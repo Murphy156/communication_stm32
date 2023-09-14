@@ -2,7 +2,7 @@ import serial
 import time
 import sys
 from core.qttem.QT_TEM import *
-from PyQt6.QtWidgets import (QApplication)
+from PyQt6.QtWidgets import *
 
 
 def create_data_packet(header_code, packet_len,command_code, parameter, sum):
@@ -66,7 +66,8 @@ def send_msg(data):
 
 def main():
    app = QApplication(sys.argv)
-   ex = QT_INIT()
+   window = MainWindow()
+   window.show()
    sys.exit(app.exec())
 
 

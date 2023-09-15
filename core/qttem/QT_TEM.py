@@ -1,40 +1,77 @@
 import sys
-from PyQt6.QtCore import *
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import *
-from PyQt6.QtGui import *
+from PyQt6.QtWidgets import QMainWindow, QApplication, QWidget
 
-#from PyQt6.QtCore import Qt
-# from PyQt6.QtWidgets import (QWidget, QToolTip,QPushButton, QApplication,QMainWindow,QMenu,QFrame,QVBoxLayout, QSplitter)
-# from PyQt6.QtGui import QIcon, QAction
+from PyQt6.QtGui import *
 
 class SubWindow1(QDialog):
     def __init__(self):
         super().__init__()
 
-        self.setGeometry(300, 200, 10, 10)
+        # 创建一个子界面容器
+        sub_widget = QWidget()
+
         # 设置子窗口的背景颜色
         self.setStyleSheet("background-color: lightblue;")
-        # 创建水平布局
-        layout = QHBoxLayout()
 
-        # 创建实线框架（QFrame）作为分隔区域
-        separator1 = QFrame()
-        separator1.setFrameShape(QFrame.Shape.Box)
-        separator1.setFrameShadow(QFrame.Shadow.Sunken)
+        # 创建子界面的主水平布局
+        MainLayout = QHBoxLayout()
 
-        # 向布局添加分隔区域和一些文本或其他控件
-        layout.addWidget(separator1)
-        layout.addWidget(QWidget())  # 用于占位的小部件
-        layout.addWidget(QWidget())  # 用于占位的小部件
+        sub_widget.setLayout(MainLayout)
 
-        # 将布局设置为子窗口的布局
-        self.setLayout(layout)
+        # 创建控制框的垂直布局
+        ControlLayout = QVBoxLayout()
+
+        # parent_width = sub_widget.width()
+        # parent_height = sub_widget.height()
+        # SerFrame_width = parent_width/3
+        # SerFrame_height = parent_height/4
+        # ConFrame_width = parent_width/3
+        # ConFrame_height = parent_height
+#        Dis_Frame_width = parent_width/2
+#        Dis_Frame_height = parent_height
+
+
+        # 创建串口框架
+        SerFrame = QFrame()
+        SerFrame.setFrameShape(QFrame.Shape.Box)
+        SerFrame.setFrameShadow(QFrame.Shadow.Raised)
+        SerFrame.setLineWidth(1)
+        SerFrame.setStyleSheet("background-color: orange;")
+        SerFrame.setFixedSize(200, 150)
+        ControlLayout.addWidget(SerFrame)
+
+        # 创建控制框架
+        ConFrame = QFrame()
+        ConFrame.setFrameShape(QFrame.Shape.Box)
+        ConFrame.setFrameShadow(QFrame.Shadow.Raised)
+        ConFrame.setLineWidth(1)
+        ConFrame.setStyleSheet("background-color: red;")
+        ConFrame.setFixedSize(200, 500)
+        ControlLayout.addWidget(ConFrame)
+
+        # 创建显示框架
+        Dis_Frame = QFrame()
+        Dis_Frame.setFrameShape(QFrame.Shape.Box)
+        Dis_Frame.setFrameShadow(QFrame.Shadow.Raised)
+        Dis_Frame.setLineWidth(1)
+        Dis_Frame.setStyleSheet("background-color: green;")
+#        Dis_Frame.setFixedSize(Dis_Frame_width,Dis_Frame_height)
+
+        # 现将控制端放在左边
+        MainLayout.addLayout(ControlLayout)
+        MainLayout.addWidget(Dis_Frame)
+        self.setLayout(MainLayout)
+
+        # # 将布局设置为子窗口的布局
+        # self.setLayout(layout)
 
 class SubWindow2(QDialog):
     def __init__(self):
         super().__init__()
 
-        self.setGeometry(300, 200, 10, 10)
+        self.setFixedSize(300, 200)
         # 设置子窗口的背景颜色
         self.setStyleSheet("background-color: lightgreen;")
 # 创建垂直布局
@@ -47,8 +84,6 @@ class SubWindow2(QDialog):
 
         # 向布局添加分隔区域和一些文本或其他控件
         layout.addWidget(separator)
-        layout.addWidget(QWidget())  # 用于占位的小部件
-        layout.addWidget(QWidget())  # 用于占位的小部件
 
         # 将布局设置为子窗口的布局
         self.setLayout(layout)
@@ -70,8 +105,6 @@ class SubWindow3(QDialog):
 
         # 向布局添加分隔区域和一些文本或其他控件
         layout.addWidget(separator)
-        layout.addWidget(QWidget())  # 用于占位的小部件
-        layout.addWidget(QWidget())  # 用于占位的小部件
 
         # 将布局设置为子窗口的布局
         self.setLayout(layout)
@@ -93,8 +126,6 @@ class SubWindow4(QDialog):
 
         # 向布局添加分隔区域和一些文本或其他控件
         layout.addWidget(separator)
-        layout.addWidget(QWidget())  # 用于占位的小部件
-        layout.addWidget(QWidget())  # 用于占位的小部件
 
         # 将布局设置为子窗口的布局
         self.setLayout(layout)
@@ -113,6 +144,9 @@ class MainWindow(QMainWindow):
 
         # 创建垂直布局
         main_layout = QVBoxLayout()
+
+        # 设置主窗口容器的布局为垂直布局
+        main_widget.setLayout(main_layout)
 
         # 创建按钮布局
         button_layout = QHBoxLayout()
@@ -151,9 +185,6 @@ class MainWindow(QMainWindow):
         # spacer = QSpacerItem(1, 1, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
         # main_layout.addItem(spacer)
 
-        # 设置主窗口容器的布局为垂直布局
-        main_widget.setLayout(main_layout)
-
         # 设置主窗口的背景颜色
         self.setStyleSheet("background-color: lightblack;")
 
@@ -163,6 +194,10 @@ class MainWindow(QMainWindow):
 
     def open_window1(self):
         sub_window1 = SubWindow1()
+        # # 创建子界面的主水平布局
+        # MainLayout = QWidget()
+        # MainLayout.setLayout(QHBoxLayout())
+        # MainLayout.layout().addLayout(sub_window1.layout())
         self.stacked_widget.addWidget(sub_window1)
         self.stacked_widget.setCurrentWidget(sub_window1)
         self.setWindowTitle("General Control Interface")
@@ -185,7 +220,6 @@ class MainWindow(QMainWindow):
         self.stacked_widget.addWidget(sub_window4)
         self.stacked_widget.setCurrentWidget(sub_window4)
         self.setWindowTitle("PID Speed Debugging")
-
 
 
 

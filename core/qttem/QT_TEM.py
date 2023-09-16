@@ -23,14 +23,36 @@ class SubWindow1(QDialog):
         # 创建控制框的垂直布局
         ControlLayout = QVBoxLayout()
 
-        # parent_width = sub_widget.width()
-        # parent_height = sub_widget.height()
-        # SerFrame_width = parent_width/3
-        # SerFrame_height = parent_height/4
-        # ConFrame_width = parent_width/3
-        # ConFrame_height = parent_height
-#        Dis_Frame_width = parent_width/2
-#        Dis_Frame_height = parent_height
+        MainLayout.addLayout(ControlLayout)
+
+        lable1 = QLabel("Serial Port Configuration")
+        ControlLayout.addWidget(lable1)
+
+#####################
+        # 串口布局安排
+        PortLayout = QHBoxLayout()
+
+        lable2 = QLabel("port")
+        PortLayout.addWidget(lable2)
+
+        # 串口的下拉选框
+        COM = QComboBox(self)
+        COM.addItem('COM1')
+        COM.addItem('COM2')
+        COM.addItem('COM3')
+        COM.addItem('COM4')
+        COM.addItem('COM5')
+        COM.addItem('COM6')
+        COM.setMinimumWidth(80)
+        COM.setMaximumWidth(80)
+        PortLayout.addWidget(COM)
+
+        # 将PortLayout放在ControlLayout
+        ControlLayout.addLayout(PortLayout)
+
+#####################
+
+
 
 
         # 创建串口框架
@@ -48,7 +70,7 @@ class SubWindow1(QDialog):
         ConFrame.setFrameShadow(QFrame.Shadow.Raised)
         ConFrame.setLineWidth(1)
         ConFrame.setStyleSheet("background-color: red;")
-        ConFrame.setFixedSize(200, 500)
+        ConFrame.setFixedSize(200, 525)
         ControlLayout.addWidget(ConFrame)
 
         # 创建显示框架
@@ -60,7 +82,6 @@ class SubWindow1(QDialog):
 #        Dis_Frame.setFixedSize(Dis_Frame_width,Dis_Frame_height)
 
         # 现将控制端放在左边
-        MainLayout.addLayout(ControlLayout)
         MainLayout.addWidget(Dis_Frame)
         self.setLayout(MainLayout)
 

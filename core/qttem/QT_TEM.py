@@ -12,6 +12,10 @@ class SubWindow1(QDialog):
         # 创建一个子界面容器
         sub_widget = QWidget()
 
+        # 创建串口和波特率的选择
+        self.selected_port = None
+        self.selected_baud = None
+
         # 设置子窗口的背景颜色
         self.setStyleSheet("background-color: lightblue;")
 
@@ -23,16 +27,36 @@ class SubWindow1(QDialog):
         # 创建控制框的垂直布局
         ControlLayout = QVBoxLayout()
 
+        # 将控制框的界面放入到主框的左边
         MainLayout.addLayout(ControlLayout)
 
+        # 创建控制框中的串口设置垂直分布布局
+        ContSeriLayout = QVBoxLayout()
+
+        # 将串口设置布局放入控制框中的垂直分布中
+        ControlLayout.addLayout(ContSeriLayout)
+
         lable1 = QLabel("Serial Port Configuration")
-        ControlLayout.addWidget(lable1)
+        lable1.setFixedSize(200, 20)
+
+        # 创建一个字体对象
+        font1 = QFont()
+        font1.setPointSize(15)  # 设置字体大小
+        font1.setBold(True)     # 设置为粗体
+        lable1.setFont(font1)
+        # 将第一个文本框放在串口设置布局中
+        ContSeriLayout.addWidget(lable1)
 
 #####################
         # 串口布局安排
         PortLayout = QHBoxLayout()
+        lable2 = QLabel("Port")
 
-        lable2 = QLabel("port")
+        font2 = QFont()
+        font2.setPointSize(13)  # 设置字体大小
+        font2.setBold(True)     # 设置为粗体
+        lable2.setFont(font2)
+
         PortLayout.addWidget(lable2)
 
         # 串口的下拉选框
@@ -43,35 +67,61 @@ class SubWindow1(QDialog):
         COM.addItem('COM4')
         COM.addItem('COM5')
         COM.addItem('COM6')
-        COM.setMinimumWidth(80)
-        COM.setMaximumWidth(80)
+        COM.setMinimumWidth(90)
+        COM.setMaximumWidth(90)
         PortLayout.addWidget(COM)
+        # 将COM和BAUD作为类的成员变量
+        self.COM = COM
 
         # 将PortLayout放在ControlLayout
-        ControlLayout.addLayout(PortLayout)
-
+        ContSeriLayout.addLayout(PortLayout)
 #####################
 
+#####################
+        # 波特率布局安排
+        BaudLayout = QHBoxLayout()
+        lable3 = QLabel("Baudrate")
 
+        lable3.setFont(font2)
 
+        BaudLayout.addWidget(lable3)
 
-        # 创建串口框架
-        SerFrame = QFrame()
-        SerFrame.setFrameShape(QFrame.Shape.Box)
-        SerFrame.setFrameShadow(QFrame.Shadow.Raised)
-        SerFrame.setLineWidth(1)
-        SerFrame.setStyleSheet("background-color: orange;")
-        SerFrame.setFixedSize(200, 150)
-        ControlLayout.addWidget(SerFrame)
+        # 串口的下拉选框
+        BAUD = QComboBox(self)
+        BAUD.addItem('2400', 2400)
+        BAUD.addItem('4800', 4800)
+        BAUD.addItem('9600', 9600)
+        BAUD.addItem('19200', 19200)
+        BAUD.addItem('38400', 38400)
+        BAUD.addItem('57600', 57600)
+        BAUD.addItem('115200', 115200)
+        BAUD.addItem('128000', 128000)
+        BAUD.addItem('230400', 230400)
+        BAUD.addItem('256000', 256000)
+        BAUD.setMinimumWidth(90)
+        BAUD.setMaximumWidth(90)
+        BaudLayout.addWidget(BAUD)
+        # 将COM和BAUD作为类的成员变量
+        self.BAUD = BAUD
+        # BaudLayout
+        ContSeriLayout.addLayout(BaudLayout)
+#####################
 
-        # 创建控制框架
-        ConFrame = QFrame()
-        ConFrame.setFrameShape(QFrame.Shape.Box)
-        ConFrame.setFrameShadow(QFrame.Shadow.Raised)
-        ConFrame.setLineWidth(1)
-        ConFrame.setStyleSheet("background-color: red;")
-        ConFrame.setFixedSize(200, 525)
-        ControlLayout.addWidget(ConFrame)
+#####################
+        CommunicationLayout = QHBoxLayout()
+        self.indicatior = QLabel()
+        self.indicatior.setFixedSize(20, 20)
+        self.indicatior.setStyleSheet("background-color: gray; border-radius: 10px;")
+        CommunicationLayout.addWidget(self.indicatior)
+
+        post_com_button = QPushButton("Open Serial")
+        post_com_button.setFixedSize(80, 20)  # 设置按钮1的尺寸
+        post_com_button.clicked.connect(self.post_com_function)
+        CommunicationLayout.addWidget(post_com_button)
+
+        ContSeriLayout.addLayout(CommunicationLayout)
+
+#####################
 
         # 创建显示框架
         Dis_Frame = QFrame()
@@ -87,6 +137,23 @@ class SubWindow1(QDialog):
 
         # # 将布局设置为子窗口的布局
         # self.setLayout(layout)
+
+    def post_com_function(self):
+        self.selected_port = self.COM.currentText()
+        self.selected_baud = int(self.BAUD.currentText())
+        if self.indicatior.styleSheet() == "background-color: gray; border-radius: 10px;":
+            self.indicatior.setStyleSheet("background-color: green; border-radius: 10px;")
+            self.COM.setDisabled(True)
+            self.BAUD.setDisabled(True)
+        else:
+            self.indicatior.setStyleSheet("background-color: gray; border-radius: 10px;")
+            self.COM.setEnabled(True)
+            self.BAUD.setEnabled(True)
+        print("Selected port:", self.selected_port)
+        print("Selected baud rate:", self.selected_baud)
+
+
+
 
 class SubWindow2(QDialog):
     def __init__(self):

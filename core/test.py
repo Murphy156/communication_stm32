@@ -1,44 +1,39 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QCheckBox
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QFrame, QLabel
 
-class CheckBoxExample(QWidget):
+class MyWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
-        self.setWindowTitle('Checkbox Example')
-        self.setGeometry(300, 300, 300, 200)
+        # 创建一个实线框
+        frame = QFrame(self)
+        frame.setFrameShape(QFrame.Shape.Box)
+        frame.setLineWidth(2)
 
-        vbox = QVBoxLayout()
+        # 创建一个 QWidget 作为实线框的子控件
+        widget_inside_frame = QWidget(frame)
 
-        # Create checkboxes
-        checkbox1 = QCheckBox('Option 1', self)
-        checkbox2 = QCheckBox('Option 2', self)
-        checkbox3 = QCheckBox('Option 3', self)
+        # 创建一个垂直布局，并设置给这个 QWidget
+        vbox = QVBoxLayout(widget_inside_frame)
+        vbox.addWidget(QLabel("Label 1"))
+        vbox.addWidget(QLabel("Label 2"))
 
-        # Connect the stateChanged signal to a slot
-        checkbox1.stateChanged.connect(self.checkbox_state_changed)
-        checkbox2.stateChanged.connect(self.checkbox_state_changed)
-        checkbox3.stateChanged.connect(self.checkbox_state_changed)
+        # 将这个 QWidget 添加到实线框中
+        frame_layout = QVBoxLayout()
+        frame_layout.addWidget(widget_inside_frame)
+        frame.setLayout(frame_layout)
 
-        # Add checkboxes to the vertical layout
-        vbox.addWidget(checkbox1)
-        vbox.addWidget(checkbox2)
-        vbox.addWidget(checkbox3)
+        # 创建一个垂直布局，将实线框放置在主窗口中
+        main_layout = QVBoxLayout(self)
+        main_layout.addWidget(frame)
 
-        self.setLayout(vbox)
-        self.show()
-
-    def checkbox_state_changed(self, state):
-        sender = self.sender()  # Get the checkbox that triggered the signal
-
-        if state == 2:  # 2 means checked, 0 means unchecked
-            print(f'Checkbox {sender.text()} is checked')
-        else:
-            print(f'Checkbox {sender.text()} is unchecked')
+        self.setWindowTitle('Frame Example')
+        self.setGeometry(100, 100, 300, 200)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = CheckBoxExample()
+    widget = MyWidget()
+    widget.show()
     sys.exit(app.exec())

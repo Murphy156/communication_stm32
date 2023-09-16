@@ -17,7 +17,7 @@ class SubWindow1(QDialog):
         self.selected_baud = None
 
         # 设置子窗口的背景颜色
-        self.setStyleSheet("background-color: lightblue;")
+        self.setStyleSheet("background-color: #bfc6c7;")
 
         # 创建子界面的主水平布局
         MainLayout = QHBoxLayout()
@@ -36,8 +36,16 @@ class SubWindow1(QDialog):
         # 将串口设置布局放入控制框中的垂直分布中
         ControlLayout.addLayout(ContSeriLayout)
 
+        # 创建控制框中的电机控制面板设置的垂直分布
+        ContMotCLayout = QVBoxLayout()
+
+        # 将电机控制面板设置放入控制框中的垂直分布
+        ControlLayout.addLayout(ContMotCLayout)
+
+# program start 这里是设置串口设置的布局
         lable1 = QLabel("Serial Port Configuration")
         lable1.setFixedSize(200, 20)
+        lable1.setStyleSheet("color: black")
 
         # 创建一个字体对象
         font1 = QFont()
@@ -47,10 +55,10 @@ class SubWindow1(QDialog):
         # 将第一个文本框放在串口设置布局中
         ContSeriLayout.addWidget(lable1)
 
-#####################
         # 串口布局安排
         PortLayout = QHBoxLayout()
         lable2 = QLabel("Port")
+        lable2.setStyleSheet("color: black")
 
         font2 = QFont()
         font2.setPointSize(13)  # 设置字体大小
@@ -69,18 +77,19 @@ class SubWindow1(QDialog):
         COM.addItem('COM6')
         COM.setMinimumWidth(90)
         COM.setMaximumWidth(90)
+        COM.setStyleSheet("background-color: #bfc6c7; color: black")
         PortLayout.addWidget(COM)
         # 将COM和BAUD作为类的成员变量
         self.COM = COM
 
         # 将PortLayout放在ControlLayout
         ContSeriLayout.addLayout(PortLayout)
-#####################
 
-#####################
+
         # 波特率布局安排
         BaudLayout = QHBoxLayout()
         lable3 = QLabel("Baudrate")
+        lable3.setStyleSheet("background-color: #bfc6c7; color: black")
 
         lable3.setFont(font2)
 
@@ -101,13 +110,12 @@ class SubWindow1(QDialog):
         BAUD.setMinimumWidth(90)
         BAUD.setMaximumWidth(90)
         BaudLayout.addWidget(BAUD)
+        BAUD.setStyleSheet("background-color: #bfc6c7; color: black")
         # 将COM和BAUD作为类的成员变量
         self.BAUD = BAUD
         # BaudLayout
         ContSeriLayout.addLayout(BaudLayout)
-#####################
 
-#####################
         CommunicationLayout = QHBoxLayout()
         self.indicatior = QLabel()
         self.indicatior.setFixedSize(20, 20)
@@ -116,19 +124,158 @@ class SubWindow1(QDialog):
 
         post_com_button = QPushButton("Open Serial")
         post_com_button.setFixedSize(80, 20)  # 设置按钮1的尺寸
+        post_com_button.setStyleSheet("background-color: #838787; color: #d7dbdb")
         post_com_button.clicked.connect(self.post_com_function)
         CommunicationLayout.addWidget(post_com_button)
 
         ContSeriLayout.addLayout(CommunicationLayout)
+#program end
 
-#####################
+
+##program2 start 这里是创建电机控制面板模块的
+        lable4 = QLabel("Serial Port Configuration")
+        lable4.setFixedSize(200, 20)
+        lable4.setFont(font1)
+        lable4.setStyleSheet("background-color: #bfc6c7; color: black")
+        # 将第一个文本框放在串口设置布局中
+        ContMotCLayout.addWidget(lable4)
+
+        lable5 = QLabel("SpeedSet/RPM")
+        lable5.setFixedSize(100, 15)
+        lable5.setStyleSheet("background-color: #bfc6c7; color: black")
+        ContMotCLayout.addWidget(lable5)
+
+        # pump1的控制框
+        Pump1Layout = QHBoxLayout()
+        self.Pump1RPMEdit = QLineEdit(self)
+        self.Pump1RPMEdit.setFixedSize(80, 20)
+        self.Pump1RPMEdit.setPlaceholderText('Pump1')
+        self.Pump1RPMEdit.setStyleSheet("background-color: #c1c7c7; color: black")
+        Pump1Layout.addWidget(self.Pump1RPMEdit)
+
+        Pump1Button1 = QPushButton("Enable")
+        Pump1Button1.setFixedSize(50, 20)
+        Pump1Button1.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump1Layout.addWidget(Pump1Button1)
+
+        Pump1Button2 = QPushButton("Disable")
+        Pump1Button2.setFixedSize(50, 20)
+        Pump1Button2.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump1Layout.addWidget(Pump1Button2)
+
+        Pump1Button3 = QPushButton("Change")
+        Pump1Button3.setFixedSize(50, 20)
+        Pump1Button3.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump1Layout.addWidget(Pump1Button3)
+        ContMotCLayout.addLayout(Pump1Layout)
+
+        # pump2的控制框
+        Pump2Layout = QHBoxLayout()
+        self.Pump2RPMEdit = QLineEdit(self)
+        self.Pump2RPMEdit.setFixedSize(80, 20)
+        self.Pump2RPMEdit.setPlaceholderText('Pump2')
+        self.Pump2RPMEdit.setStyleSheet("background-color: #c1c7c7; color: black")
+        Pump2Layout.addWidget(self.Pump2RPMEdit)
+
+        Pump2Button1 = QPushButton("Enable")
+        Pump2Button1.setFixedSize(50, 20)
+        Pump2Button1.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump2Layout.addWidget(Pump2Button1)
+
+        Pump2Button2 = QPushButton("Disable")
+        Pump2Button2.setFixedSize(50, 20)
+        Pump2Button2.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump2Layout.addWidget(Pump2Button2)
+
+        Pump2Button3 = QPushButton("Change")
+        Pump2Button3.setFixedSize(50, 20)
+        Pump2Button3.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump2Layout.addWidget(Pump2Button3)
+        ContMotCLayout.addLayout(Pump2Layout)
+
+        # pump3的控制框
+        Pump3Layout = QHBoxLayout()
+        self.Pump3RPMEdit = QLineEdit(self)
+        self.Pump3RPMEdit.setFixedSize(80, 20)
+        self.Pump3RPMEdit.setPlaceholderText('Pump3')
+        self.Pump3RPMEdit.setStyleSheet("background-color: #c1c7c7; color: black")
+        Pump3Layout.addWidget(self.Pump3RPMEdit)
+
+        Pump3Button1 = QPushButton("Enable")
+        Pump3Button1.setFixedSize(50, 20)
+        Pump3Button1.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump3Layout.addWidget(Pump3Button1)
+
+        Pump3Button2 = QPushButton("Disable")
+        Pump3Button2.setFixedSize(50, 20)
+        Pump3Button2.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump3Layout.addWidget(Pump3Button2)
+
+        Pump3Button3 = QPushButton("Change")
+        Pump3Button3.setFixedSize(50, 20)
+        Pump3Button3.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump3Layout.addWidget(Pump3Button3)
+        ContMotCLayout.addLayout(Pump3Layout)
+
+        # pump4的控制框
+        Pump4Layout = QHBoxLayout()
+        self.Pump4RPMEdit = QLineEdit(self)
+        self.Pump4RPMEdit.setFixedSize(80, 20)
+        self.Pump4RPMEdit.setPlaceholderText('Pump4')
+        self.Pump4RPMEdit.setStyleSheet("background-color: #c1c7c7; color: black")
+        Pump4Layout.addWidget(self.Pump4RPMEdit)
+
+        Pump4Button1 = QPushButton("Enable")
+        Pump4Button1.setFixedSize(50, 20)
+        Pump4Button1.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump4Layout.addWidget(Pump4Button1)
+
+        Pump4Button2 = QPushButton("Disable")
+        Pump4Button2.setFixedSize(50, 20)
+        Pump4Button2.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump4Layout.addWidget(Pump4Button2)
+
+        Pump4Button3 = QPushButton("Change")
+        Pump4Button3.setFixedSize(50, 20)
+        Pump4Button3.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump4Layout.addWidget(Pump4Button3)
+        ContMotCLayout.addLayout(Pump4Layout)
+
+        # pump5的控制框
+        Pump5Layout = QHBoxLayout()
+        self.Pump5RPMEdit = QLineEdit(self)
+        self.Pump5RPMEdit.setFixedSize(80, 20)
+        self.Pump5RPMEdit.setPlaceholderText('Pump4')
+        self.Pump5RPMEdit.setStyleSheet("background-color: #c1c7c7; color: black")
+        Pump5Layout.addWidget(self.Pump5RPMEdit)
+
+        Pump5Button1 = QPushButton("Enable")
+        Pump5Button1.setFixedSize(50, 20)
+        Pump5Button1.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump5Layout.addWidget(Pump5Button1)
+
+        Pump5Button2 = QPushButton("Disable")
+        Pump5Button2.setFixedSize(50, 20)
+        Pump5Button2.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump5Layout.addWidget(Pump5Button2)
+
+        Pump5Button3 = QPushButton("Change")
+        Pump5Button3.setFixedSize(50, 20)
+        Pump5Button3.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump5Layout.addWidget(Pump5Button3)
+        ContMotCLayout.addLayout(Pump5Layout)
+
+##program2 end
+
+
+
 
         # 创建显示框架
         Dis_Frame = QFrame()
         Dis_Frame.setFrameShape(QFrame.Shape.Box)
         Dis_Frame.setFrameShadow(QFrame.Shadow.Raised)
         Dis_Frame.setLineWidth(1)
-        Dis_Frame.setStyleSheet("background-color: green;")
+        Dis_Frame.setStyleSheet("background-color: black;")
 #        Dis_Frame.setFixedSize(Dis_Frame_width,Dis_Frame_height)
 
         # 现将控制端放在左边

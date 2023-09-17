@@ -1,7 +1,7 @@
 import sys
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import *
-from PyQt6.QtWidgets import QMainWindow, QApplication, QWidget
+from PyQt6.QtWidgets import QMainWindow, QApplication, QWidget, QGraphicsView, QGraphicsScene, QGraphicsLineItem, QGraphicsTextItem, QGraphicsEllipseItem
 
 from PyQt6.QtGui import *
 
@@ -41,6 +41,7 @@ class SubWindow1(QDialog):
 
         # 将电机控制面板设置放入控制框中的垂直分布
         ControlLayout.addLayout(ContMotCLayout)
+
 
 # program start 这里是设置串口设置的布局
         lable1 = QLabel("Serial Port Configuration")
@@ -267,23 +268,47 @@ class SubWindow1(QDialog):
 
 ##program2 end
 
+# 放入显示组件
+        # 创建两组显示组件垂直布局图
+        GraAllLayout = QHBoxLayout()
+        GraAllLayout.setSpacing(0)
+        GraLayout1 = QVBoxLayout()
+        GraLayout2 = QVBoxLayout()
+        GraLayout1.setSpacing(0)
+        GraLayout2.setSpacing(0)
+        GraAllLayout.addLayout(GraLayout1)
+        GraAllLayout.addLayout(GraLayout2)
+        MainLayout.addLayout(GraAllLayout)
 
+        Grab1Lable = QLabel("Pump 1")
+        Gra1 = self.create_axis()
+        GraLayout1.addWidget(Gra1)
+        Grab1Lable.setStyleSheet("background-color: #18191c; color: white")
+        Grab1Lable.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        GraLayout1.addWidget(Grab1Lable)
 
+        Grab2Lable = QLabel("Pump 2")
+        Gra2 = self.create_axis()
+        GraLayout1.addWidget(Gra2)
+        Grab2Lable.setStyleSheet("background-color: #18191c; color: white")
+        Grab2Lable.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        GraLayout1.addWidget(Grab2Lable)
 
-        # 创建显示框架
-        Dis_Frame = QFrame()
-        Dis_Frame.setFrameShape(QFrame.Shape.Box)
-        Dis_Frame.setFrameShadow(QFrame.Shadow.Raised)
-        Dis_Frame.setLineWidth(1)
-        Dis_Frame.setStyleSheet("background-color: black;")
-#        Dis_Frame.setFixedSize(Dis_Frame_width,Dis_Frame_height)
+        Grab3Lable = QLabel("Pump 3")
+        Gra3 = self.create_axis()
+        GraLayout2.addWidget(Gra3)
+        Grab3Lable.setStyleSheet("background-color: #18191c; color: white")
+        Grab3Lable.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        GraLayout2.addWidget(Grab3Lable)
 
-        # 现将控制端放在左边
-        MainLayout.addWidget(Dis_Frame)
+        Grab4Lable = QLabel("Pump 4")
+        Gra4 = self.create_axis()
+        GraLayout2.addWidget(Gra4)
+        Grab4Lable.setStyleSheet("background-color: #18191c; color: white")
+        Grab4Lable.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        GraLayout2.addWidget(Grab4Lable)
+
         self.setLayout(MainLayout)
-
-        # # 将布局设置为子窗口的布局
-        # self.setLayout(layout)
 
     def post_com_function(self):
         self.selected_port = self.COM.currentText()
@@ -299,6 +324,51 @@ class SubWindow1(QDialog):
         print("Selected port:", self.selected_port)
         print("Selected baud rate:", self.selected_baud)
 
+    def create_axis(self):
+        # 创建一个 QGraphicsView
+        graphics_view = QGraphicsView()
+
+        # 设置场景
+        scene = QGraphicsScene()
+        graphics_view.setScene(scene)
+
+        # 调整可视化显示的大小
+        width = 200  # 根据需要调整
+        height = 200  # 根据需要调整
+
+        # 创建左侧的y轴（速度）
+        y_axis = QGraphicsLineItem(0, 0, 0, height)
+        y_axis.setPen(QPen(QColor("white")))
+        scene.addItem(y_axis)
+
+        # 创建x轴（时间）
+        x_axis = QGraphicsLineItem(0, height / 2, width, height / 2)
+        x_axis.setPen(QPen(QColor("white")))
+        scene.addItem(x_axis)
+
+        # 为x轴添加刻度线和标签
+        for i in range(0, int(width) + 1, int(width / 4)):
+            tick = QGraphicsLineItem(i, height / 2 - 5, i, height / 2 + 5)
+            tick.setPen(QPen(QColor("white")))  # 设置刻度线颜色为白色
+            scene.addItem(tick)
+            label = QGraphicsTextItem(str(i))
+            label.setPos(i - 10, height / 2 + 10)
+            label.setDefaultTextColor(QColor("white"))
+            scene.addItem(label)
+
+        # 为y轴添加刻度线和标签
+        for i in range(-200, 201, 50):
+            tick = QGraphicsLineItem(-5, height * (1 - (i + 200) / 400), 5, height * (1 - (i + 200) / 400))
+            tick.setPen(QPen(QColor("white")))  # 设置刻度线颜色为白色
+            scene.addItem(tick)
+            label = QGraphicsTextItem(str(i))
+            label.setPos(-40, height * (1 - (i + 200) / 400) - 10)
+            label.setDefaultTextColor(QColor("white"))
+            scene.addItem(label)
+
+        graphics_view.setStyleSheet("background-color: #18191c;")
+
+        return graphics_view
 
 
 
@@ -412,6 +482,7 @@ class MainWindow(QMainWindow):
         button4.setStyleSheet("background-color: gray; color: white;")
         button_layout.addWidget(button4)
 
+        button_layout.setSpacing(0)
 
         # 添加水平布局到垂直布局
         main_layout.addLayout(button_layout)
@@ -426,6 +497,7 @@ class MainWindow(QMainWindow):
         # 创建一个堆叠窗口，用于显示子窗口
         self.stacked_widget = QStackedWidget()
         main_layout.addWidget(self.stacked_widget)
+        main_layout.setSpacing(0)
 
     def open_window1(self):
         sub_window1 = SubWindow1()

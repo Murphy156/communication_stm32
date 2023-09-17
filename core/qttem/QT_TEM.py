@@ -2,7 +2,7 @@ import sys
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import *
 from PyQt6.QtWidgets import QMainWindow, QApplication, QWidget, QGraphicsView, QGraphicsScene, QGraphicsLineItem, QGraphicsTextItem, QGraphicsEllipseItem
-
+from core.SerialData.SerialDataAnalysis import *
 from PyQt6.QtGui import *
 
 class SubWindow1(QDialog):
@@ -50,7 +50,7 @@ class SubWindow1(QDialog):
 
         # 创建一个字体对象
         font1 = QFont()
-        font1.setPointSize(15)  # 设置字体大小
+        font1.setPointSize(10)  # 设置字体大小
         font1.setBold(True)     # 设置为粗体
         lable1.setFont(font1)
         # 将第一个文本框放在串口设置布局中
@@ -62,7 +62,7 @@ class SubWindow1(QDialog):
         lable2.setStyleSheet("color: black")
 
         font2 = QFont()
-        font2.setPointSize(13)  # 设置字体大小
+        font2.setPointSize(10)  # 设置字体大小
         font2.setBold(True)     # 设置为粗体
         lable2.setFont(font2)
 
@@ -313,14 +313,18 @@ class SubWindow1(QDialog):
     def post_com_function(self):
         self.selected_port = self.COM.currentText()
         self.selected_baud = int(self.BAUD.currentText())
+        OpenSeri = SerialCommunication()
         if self.indicatior.styleSheet() == "background-color: gray; border-radius: 10px;":
             self.indicatior.setStyleSheet("background-color: green; border-radius: 10px;")
             self.COM.setDisabled(True)
             self.BAUD.setDisabled(True)
+            OpenSeri.open_ser(self.selected_port, self.selected_baud)
         else:
             self.indicatior.setStyleSheet("background-color: gray; border-radius: 10px;")
             self.COM.setEnabled(True)
             self.BAUD.setEnabled(True)
+            OpenSeri.close_ser()
+
         print("Selected port:", self.selected_port)
         print("Selected baud rate:", self.selected_baud)
 
@@ -364,7 +368,7 @@ class SubWindow1(QDialog):
             tick.setPen(QPen(QColor("white")))  # 设置刻度线颜色为白色
             scene.addItem(tick)
             label = QGraphicsTextItem(str(i))
-            label.setPos(i - 10, height / 2 + 100)
+            label.setPos(i - 10, height / 2 + 142)
             label.setDefaultTextColor(QColor("white"))
             scene.addItem(label)
 

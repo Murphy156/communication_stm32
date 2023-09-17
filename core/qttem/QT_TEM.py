@@ -333,8 +333,8 @@ class SubWindow1(QDialog):
         graphics_view.setScene(scene)
 
         # 调整可视化显示的大小
-        width = 200  # 根据需要调整
-        height = 200  # 根据需要调整
+        width = 300  # 根据需要调整
+        height = 300  # 根据需要调整
 
         # 创建左侧的y轴（速度）
         y_axis = QGraphicsLineItem(0, 0, 0, height)
@@ -346,13 +346,25 @@ class SubWindow1(QDialog):
         x_axis.setPen(QPen(QColor("white")))
         scene.addItem(x_axis)
 
+        # 添加网格
+        for i in range(0, int(width) + 1, int(width / 8)):
+            grid_line = QGraphicsLineItem(i, 0, i, height)
+            grid_line.setPen(QPen(QColor("#555555")))  # 设置网格线颜色
+            scene.addItem(grid_line)
+
+        for i in range(0, int(height) + 1, int(height / 8)):
+            grid_line = QGraphicsLineItem(0, i, width, i)
+            grid_line.setPen(QPen(QColor("#555555")))  # 设置网格线颜色
+            scene.addItem(grid_line)
+
+
         # 为x轴添加刻度线和标签
         for i in range(0, int(width) + 1, int(width / 4)):
             tick = QGraphicsLineItem(i, height / 2 - 5, i, height / 2 + 5)
             tick.setPen(QPen(QColor("white")))  # 设置刻度线颜色为白色
             scene.addItem(tick)
             label = QGraphicsTextItem(str(i))
-            label.setPos(i - 10, height / 2 + 10)
+            label.setPos(i - 10, height / 2 + 100)
             label.setDefaultTextColor(QColor("white"))
             scene.addItem(label)
 

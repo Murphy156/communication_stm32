@@ -34,11 +34,10 @@ class SerialCommunication:
         except Exception as exc:
             print("post err", exc)
 
-    def create_data_packet(self, header_code, packet_len, command_code, parameter, sum):
+    def create_data_packet(self, header_code, command_code, parameter, parity):
         header_bytes = header_code.to_bytes(2, byteorder='little')
-        packet_len_bytes = packet_len.to_bytes(4, byteorder='little')
         command_bytes = command_code.to_bytes(1, byteorder='little')
         parameter_bytes = parameter.to_bytes(4, byteorder='little')
-        sum_bytes = sum.to_bytes(1, byteorder='little')
-        data_packet = header_bytes + packet_len_bytes + command_bytes + parameter_bytes + sum_bytes
+        parity_bytes = parity.to_bytes(1, byteorder='little')
+        data_packet = header_bytes + command_bytes + parameter_bytes + parity_bytes
         return data_packet

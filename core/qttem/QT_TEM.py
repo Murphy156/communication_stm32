@@ -126,7 +126,7 @@ class SubWindow1(QDialog):
         post_com_button = QPushButton("Open Serial")
         post_com_button.setFixedSize(80, 20)  # 设置按钮1的尺寸
         post_com_button.setStyleSheet("background-color: #838787; color: #d7dbdb")
-        post_com_button.clicked.connect(self.post_com_function)
+        post_com_button.clicked.connect(self.PostSerialInfo)
         CommunicationLayout.addWidget(post_com_button)
 
         ContSeriLayout.addLayout(CommunicationLayout)
@@ -157,6 +157,7 @@ class SubWindow1(QDialog):
         Pump1Button1 = QPushButton("Enable")
         Pump1Button1.setFixedSize(50, 20)
         Pump1Button1.setStyleSheet("background-color: #838787; color: #d7dbdb")
+#        Pump1Button1.clicked.connect(self.post_)
         Pump1Layout.addWidget(Pump1Button1)
 
         Pump1Button2 = QPushButton("Disable")
@@ -310,7 +311,7 @@ class SubWindow1(QDialog):
 
         self.setLayout(MainLayout)
 
-    def post_com_function(self):
+    def PostSerialInfo(self):
         self.selected_port = self.COM.currentText()
         self.selected_baud = int(self.BAUD.currentText())
         OpenSeri = SerialCommunication()
@@ -324,9 +325,27 @@ class SubWindow1(QDialog):
             self.COM.setEnabled(True)
             self.BAUD.setEnabled(True)
             OpenSeri.close_ser()
-
         print("Selected port:", self.selected_port)
         print("Selected baud rate:", self.selected_baud)
+
+    def PostCommandInfo(self, ContCommand, parameter):
+        HeaderCode = 0x55AA
+        SumTemp = HeaderCode + ContCommand + parameter
+        count_ones = sum(int(bit) for bit in SumTemp)
+        parity_bit = count_ones % 2
+        return parity_bit
+
+    """
+    计算奇偶校验位
+    参数:
+    data (str): 输入数据
+    返回:
+    int: 奇偶校验位（0 或 1）如果有偶数个1，则输出为0；如果有奇数个1，则输出为1；
+    """
+    def CalculateParityBit(self, data):
+        count_ones = sum(int(bit) for bit in data)  # 计算输入数据中的 1 的个数
+        parity_bit = count_ones % 2  # 求取奇偶校验位
+        return parity_bit
 
     def create_axis(self):
         # 创建一个 QGraphicsView

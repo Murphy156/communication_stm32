@@ -170,6 +170,7 @@ class SubWindow1(QDialog):
         Pump1Button3 = QPushButton("Change")
         Pump1Button3.setFixedSize(50, 20)
         Pump1Button3.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump1Button3.clicked.connect(lambda: self.PostCommandInfo(0x11, int(self.Pump1RPMEdit.text())))
         Pump1Layout.addWidget(Pump1Button3)
         ContMotCLayout.addLayout(Pump1Layout)
 
@@ -196,6 +197,7 @@ class SubWindow1(QDialog):
         Pump2Button3 = QPushButton("Change")
         Pump2Button3.setFixedSize(50, 20)
         Pump2Button3.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump2Button3.clicked.connect(lambda: self.PostCommandInfo(0x12, int(self.Pump2RPMEdit.text())))
         Pump2Layout.addWidget(Pump2Button3)
         ContMotCLayout.addLayout(Pump2Layout)
 
@@ -222,6 +224,7 @@ class SubWindow1(QDialog):
         Pump3Button3 = QPushButton("Change")
         Pump3Button3.setFixedSize(50, 20)
         Pump3Button3.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump3Button3.clicked.connect(lambda: self.PostCommandInfo(0x13, int(self.Pump3RPMEdit.text())))
         Pump3Layout.addWidget(Pump3Button3)
         ContMotCLayout.addLayout(Pump3Layout)
 
@@ -248,6 +251,7 @@ class SubWindow1(QDialog):
         Pump4Button3 = QPushButton("Change")
         Pump4Button3.setFixedSize(50, 20)
         Pump4Button3.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump4Button3.clicked.connect(lambda: self.PostCommandInfo(0x14, int(self.Pump4RPMEdit.text())))
         Pump4Layout.addWidget(Pump4Button3)
         ContMotCLayout.addLayout(Pump4Layout)
 
@@ -274,6 +278,7 @@ class SubWindow1(QDialog):
         Pump5Button3 = QPushButton("Change")
         Pump5Button3.setFixedSize(50, 20)
         Pump5Button3.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump5Button3.clicked.connect(lambda: self.PostCommandInfo(0x15, int(self.Pump5RPMEdit.text())))
         Pump5Layout.addWidget(Pump5Button3)
         ContMotCLayout.addLayout(Pump5Layout)
 
@@ -344,6 +349,7 @@ class SubWindow1(QDialog):
             CombinPost = SerialCommunication()
             parity_bit = self.CalculateParityBit(HeaderCode, contcommand, parameter)
             print(f"奇偶校验位: {parity_bit}")
+            print("para: ", parameter, type(parameter))
             DataPacket = CombinPost.create_data_packet(HeaderCode, contcommand, parameter, parity_bit)
             CombinPost.send_msg(DataPacket)
             print(DataPacket)
@@ -358,7 +364,13 @@ class SubWindow1(QDialog):
     int: 奇偶校验位（0 或 1）如果有偶数个1，则输出为0；如果有奇数个1，则输出为1；
     """
     def CalculateParityBit(self, data1, data2, data3):
-        combined_data = data1.to_bytes(2, byteorder='little') + data2.to_bytes(1, byteorder='little') + data3.to_bytes(4, byteorder='little')
+        if isinstance(data3, int) and data3 < 0:
+            # Convert negative integers to bytes
+            Data31 = data3.to_bytes(4, byteorder='little', signed=True)
+        else:
+            # Convert non-negative integers to bytes
+            Data31 = int(data3).to_bytes(4, byteorder='little', signed=False)
+        combined_data = data1.to_bytes(2, byteorder='little') + data2.to_bytes(1, byteorder='little') + Data31
         count_ones = sum(bit == 1 for bit in combined_data)  # 计算输入数据中的 1 的个数
         parity_bit = count_ones % 2  # 求取奇偶校验位
         return parity_bit

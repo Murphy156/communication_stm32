@@ -157,12 +157,13 @@ class SubWindow1(QDialog):
         Pump1Button1 = QPushButton("Enable")
         Pump1Button1.setFixedSize(50, 20)
         Pump1Button1.setStyleSheet("background-color: #838787; color: #d7dbdb")
-#        Pump1Button1.clicked.connect(self.post_)
+        Pump1Button1.clicked.connect(lambda: self.PostCommandInfo(0x1, 0x0))
         Pump1Layout.addWidget(Pump1Button1)
 
         Pump1Button2 = QPushButton("Disable")
         Pump1Button2.setFixedSize(50, 20)
         Pump1Button2.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump1Button2.clicked.connect(lambda: self.PostCommandInfo(0x2, 0x0))
         Pump1Layout.addWidget(Pump1Button2)
 
         Pump1Button3 = QPushButton("Change")
@@ -182,11 +183,13 @@ class SubWindow1(QDialog):
         Pump2Button1 = QPushButton("Enable")
         Pump2Button1.setFixedSize(50, 20)
         Pump2Button1.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump2Button1.clicked.connect(lambda: self.PostCommandInfo(0x3, 0x0))
         Pump2Layout.addWidget(Pump2Button1)
 
         Pump2Button2 = QPushButton("Disable")
         Pump2Button2.setFixedSize(50, 20)
         Pump2Button2.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump2Button2.clicked.connect(lambda: self.PostCommandInfo(0x4, 0x0))
         Pump2Layout.addWidget(Pump2Button2)
 
         Pump2Button3 = QPushButton("Change")
@@ -206,11 +209,13 @@ class SubWindow1(QDialog):
         Pump3Button1 = QPushButton("Enable")
         Pump3Button1.setFixedSize(50, 20)
         Pump3Button1.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump3Button1.clicked.connect(lambda: self.PostCommandInfo(0x5, 0x0))
         Pump3Layout.addWidget(Pump3Button1)
 
         Pump3Button2 = QPushButton("Disable")
         Pump3Button2.setFixedSize(50, 20)
         Pump3Button2.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump3Button2.clicked.connect(lambda: self.PostCommandInfo(0x6, 0x0))
         Pump3Layout.addWidget(Pump3Button2)
 
         Pump3Button3 = QPushButton("Change")
@@ -230,11 +235,13 @@ class SubWindow1(QDialog):
         Pump4Button1 = QPushButton("Enable")
         Pump4Button1.setFixedSize(50, 20)
         Pump4Button1.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump4Button1.clicked.connect(lambda: self.PostCommandInfo(0x7, 0x0))
         Pump4Layout.addWidget(Pump4Button1)
 
         Pump4Button2 = QPushButton("Disable")
         Pump4Button2.setFixedSize(50, 20)
         Pump4Button2.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump4Button2.clicked.connect(lambda: self.PostCommandInfo(0x8, 0x0))
         Pump4Layout.addWidget(Pump4Button2)
 
         Pump4Button3 = QPushButton("Change")
@@ -254,11 +261,13 @@ class SubWindow1(QDialog):
         Pump5Button1 = QPushButton("Enable")
         Pump5Button1.setFixedSize(50, 20)
         Pump5Button1.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump5Button1.clicked.connect(lambda: self.PostCommandInfo(0x9, 0x0))
         Pump5Layout.addWidget(Pump5Button1)
 
         Pump5Button2 = QPushButton("Disable")
         Pump5Button2.setFixedSize(50, 20)
         Pump5Button2.setStyleSheet("background-color: #838787; color: #d7dbdb")
+        Pump5Button1.clicked.connect(lambda: self.PostCommandInfo(0xA, 0x0))
         Pump5Layout.addWidget(Pump5Button2)
 
         Pump5Button3 = QPushButton("Change")
@@ -328,13 +337,17 @@ class SubWindow1(QDialog):
         print("Selected port:", self.selected_port)
         print("Selected baud rate:", self.selected_baud)
 
-    def PostCommandInfo(self, ContCommand, parameter):
-        HeaderCode = 0x55AA
-        SumTemp = HeaderCode + ContCommand + parameter
-        count_ones = sum(int(bit) for bit in SumTemp)
-        parity_bit = count_ones % 2
-        return parity_bit
-
+    def PostCommandInfo(self, contcommand, parameter):
+        try:
+            HeaderCode = 0x55AA
+            CombinPost = SerialCommunication()
+            parity_bit = self.CalculateParityBit(HeaderCode, contcommand, parameter)
+            print(f"奇偶校验位: {parity_bit}")
+            DataPacket = CombinPost.create_data_packet(HeaderCode, contcommand, parameter, parity_bit)
+            CombinPost.send_msg(DataPacket)
+            print("DataPacket", DataPacket)
+        except Exception as e:
+            print("An exception occurred:", str(e))
     """
     计算奇偶校验位
     参数:
@@ -342,8 +355,9 @@ class SubWindow1(QDialog):
     返回:
     int: 奇偶校验位（0 或 1）如果有偶数个1，则输出为0；如果有奇数个1，则输出为1；
     """
-    def CalculateParityBit(self, data):
-        count_ones = sum(int(bit) for bit in data)  # 计算输入数据中的 1 的个数
+    def CalculateParityBit(self, data1, data2, data3):
+        combined_data = data1.to_bytes(2, byteorder='little') + data2.to_bytes(1, byteorder='little') + data3.to_bytes(4, byteorder='little')
+        count_ones = sum(bit == 1 for bit in combined_data)  # 计算输入数据中的 1 的个数
         parity_bit = count_ones % 2  # 求取奇偶校验位
         return parity_bit
 
@@ -522,10 +536,6 @@ class MainWindow(QMainWindow):
         # 添加水平布局到垂直布局
         main_layout.addLayout(button_layout)
 
-        # # 创建一个伸展因子，将按钮推到窗口的顶部
-        # spacer = QSpacerItem(1, 1, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-        # main_layout.addItem(spacer)
-
         # 设置主窗口的背景颜色
         self.setStyleSheet("background-color: lightblack;")
 
@@ -536,10 +546,6 @@ class MainWindow(QMainWindow):
 
     def open_window1(self):
         sub_window1 = SubWindow1()
-        # # 创建子界面的主水平布局
-        # MainLayout = QWidget()
-        # MainLayout.setLayout(QHBoxLayout())
-        # MainLayout.layout().addLayout(sub_window1.layout())
         self.stacked_widget.addWidget(sub_window1)
         self.stacked_widget.setCurrentWidget(sub_window1)
         self.setWindowTitle("General Control Interface")

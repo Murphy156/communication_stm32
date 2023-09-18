@@ -272,7 +272,7 @@ class SubWindow1(QDialog):
         Pump5Button2 = QPushButton("Disable")
         Pump5Button2.setFixedSize(50, 20)
         Pump5Button2.setStyleSheet("background-color: #838787; color: #d7dbdb")
-        Pump5Button1.clicked.connect(lambda: self.PostCommandInfo(0xA, 0x0))
+        Pump5Button2.clicked.connect(lambda: self.PostCommandInfo(0xA, 0x0))
         Pump5Layout.addWidget(Pump5Button2)
 
         Pump5Button3 = QPushButton("Change")

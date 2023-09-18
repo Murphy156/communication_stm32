@@ -29,6 +29,7 @@ class SerialCommunication:
 
     def send_msg(self, data):
         try:
+            print("Serial port is open:", ser.is_open)
             ser.write(data)
             print("data post:", data.hex())
         except Exception as exc:
@@ -40,6 +41,16 @@ class SerialCommunication:
     para1:header_code:包头数据占两个bytes
     para2：command_code：命令数据占一个bytes
     para3：parameter：参数指令，有可能是负数，所以要对参数进行判断，占4个bytes
+           这里的转换过程是：
+        例子：-500（0xf4\x01\x00\x00）低字节在高位
+        1、先将这个二进制数（0xf4\x01\x00\x00 = 1111 0100 0000 0001 0000 0000 0000 0000）计算反码：将所有位取反（ 0000 1011 1111 1110 1111 1111 1111 1111）
+        2、在反码的基础上加1（0000 1011 1111 1110 1111 1111 1111 1111 + 1 = 0000 1011 1111 1110 1111 1111 1111 1111）
+        3、将补码转换成十六进制得到'0x0b\xff\xff\xff'
+        
+        所以在mcu上求'0x0b\xff\xff\xff'的补码即可
+        1、反码：将每一位取反得到 0xf3\x01\x00\x00
+        2、补码：反码加1得到 0xf4\x01\x00\x00
+        3、将 ’0xf4\x01\x00\x00‘ 转换为十进制，得到 -500。
     para4：parity：校验位，校验1的个数
     RETURN:返回拼接的而进行数据包
     """

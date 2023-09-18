@@ -39,5 +39,8 @@ class SerialCommunication:
         command_bytes = command_code.to_bytes(1, byteorder='little')
         parameter_bytes = parameter.to_bytes(4, byteorder='little')
         parity_bytes = parity.to_bytes(1, byteorder='little')
+        # for byte1 in parameter_bytes:
+        #     print(f"{byte1:02x}")
+        # print(parameter)
         data_packet = header_bytes + command_bytes + parameter_bytes + parity_bytes
         return data_packet

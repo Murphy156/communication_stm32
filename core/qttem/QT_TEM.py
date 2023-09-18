@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtWidgets import QMainWindow, QApplication, QWidget, QGraphicsView, QGraphicsScene, QGraphicsLineItem, QGraphicsTextItem, QGraphicsEllipseItem
 from core.SerialData.SerialDataAnalysis import *
 from PyQt6.QtGui import *
+from PyQt6.QtCore import QPropertyAnimation, QByteArray, QEasingCurve, Qt
 
 class SubWindow1(QDialog):
     def __init__(self):
@@ -157,7 +158,7 @@ class SubWindow1(QDialog):
         Pump1Button1 = QPushButton("Enable")
         Pump1Button1.setFixedSize(50, 20)
         Pump1Button1.setStyleSheet("background-color: #838787; color: #d7dbdb")
-        Pump1Button1.clicked.connect(lambda: self.PostCommandInfo(0x1, 0x0))
+        Pump1Button1.clicked.connect(lambda: self.PostCommandInfo(0x1, int(self.Pump1RPMEdit.text())))
         Pump1Layout.addWidget(Pump1Button1)
 
         Pump1Button2 = QPushButton("Disable")
@@ -183,7 +184,7 @@ class SubWindow1(QDialog):
         Pump2Button1 = QPushButton("Enable")
         Pump2Button1.setFixedSize(50, 20)
         Pump2Button1.setStyleSheet("background-color: #838787; color: #d7dbdb")
-        Pump2Button1.clicked.connect(lambda: self.PostCommandInfo(0x3, 0x0))
+        Pump2Button1.clicked.connect(lambda: self.PostCommandInfo(0x3, int(self.Pump2RPMEdit.text())))
         Pump2Layout.addWidget(Pump2Button1)
 
         Pump2Button2 = QPushButton("Disable")
@@ -209,7 +210,7 @@ class SubWindow1(QDialog):
         Pump3Button1 = QPushButton("Enable")
         Pump3Button1.setFixedSize(50, 20)
         Pump3Button1.setStyleSheet("background-color: #838787; color: #d7dbdb")
-        Pump3Button1.clicked.connect(lambda: self.PostCommandInfo(0x5, 0x0))
+        Pump3Button1.clicked.connect(lambda: self.PostCommandInfo(0x5, int(self.Pump3RPMEdit.text())))
         Pump3Layout.addWidget(Pump3Button1)
 
         Pump3Button2 = QPushButton("Disable")
@@ -235,7 +236,7 @@ class SubWindow1(QDialog):
         Pump4Button1 = QPushButton("Enable")
         Pump4Button1.setFixedSize(50, 20)
         Pump4Button1.setStyleSheet("background-color: #838787; color: #d7dbdb")
-        Pump4Button1.clicked.connect(lambda: self.PostCommandInfo(0x7, 0x0))
+        Pump4Button1.clicked.connect(lambda: self.PostCommandInfo(0x7, int(self.Pump4RPMEdit.text())))
         Pump4Layout.addWidget(Pump4Button1)
 
         Pump4Button2 = QPushButton("Disable")
@@ -261,7 +262,7 @@ class SubWindow1(QDialog):
         Pump5Button1 = QPushButton("Enable")
         Pump5Button1.setFixedSize(50, 20)
         Pump5Button1.setStyleSheet("background-color: #838787; color: #d7dbdb")
-        Pump5Button1.clicked.connect(lambda: self.PostCommandInfo(0x9, 0x0))
+        Pump5Button1.clicked.connect(lambda: self.PostCommandInfo(0x9, int(self.Pump5RPMEdit.text())))
         Pump5Layout.addWidget(Pump5Button1)
 
         Pump5Button2 = QPushButton("Disable")
@@ -345,9 +346,10 @@ class SubWindow1(QDialog):
             print(f"奇偶校验位: {parity_bit}")
             DataPacket = CombinPost.create_data_packet(HeaderCode, contcommand, parameter, parity_bit)
             CombinPost.send_msg(DataPacket)
-            print("DataPacket", DataPacket)
+            print(DataPacket)
         except Exception as e:
             print("An exception occurred:", str(e))
+
     """
     计算奇偶校验位
     参数:

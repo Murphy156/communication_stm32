@@ -3,41 +3,48 @@ from PyQt6.QtWidgets import QApplication, QPushButton, QVBoxLayout, QWidget
 from PyQt6.QtCore import QPropertyAnimation, QEasingCurve, Qt
 from PyQt6.QtGui import QColor
 
-class MyWidget(QWidget):
-    def __init__(self):
-        super().__init__()
+"""
+   计算CRC-16校验值（生成多项式0x8005）
+   :param data: 要计算CRC的数据，为bytes类型
+   :return: CRC-16校验值，为整数
+   """
 
-        self.initUI()
 
-    def initUI(self):
-        layout = QVBoxLayout()
+def CalCRC_16(data1, data2, data3):
 
-        self.button = QPushButton('Click me', self)
-        self.button.setStyleSheet('background-color: green')
-        self.button.clicked.connect(self.onButtonClick)
+    crc = 0xFFFF
+    poly = 0x8005
 
-        layout.addWidget(self.button)
-        self.setLayout(layout)
+    # 合并数据
+    if isinstance(data3, int) and data3 < 0:
+        # Convert negative integers to bytes
+        Data31 = data3.to_bytes(4, byteorder='little', signed=True)
+    else:
+        # Convert non-negative integers to bytes
+        Data31 = int(data3).to_bytes(4, byteorder='little', signed=False)
 
-    def onButtonClick(self):
-        # Get the original button color
-        original_color = self.button.palette().button().color()
+    combined_data = data1.to_bytes(2, byteorder='little') + data2.to_bytes(1, byteorder='little') + Data31
 
-        # Create a property animation for background color
-        animation = QPropertyAnimation(self.button, b'backgroundColor')
-        animation.setDuration(500)  # Animation duration in milliseconds
-        animation.setStartValue(original_color)
-        animation.setEndValue(QColor('red'))
-        animation.setEasingCurve(QEasingCurve.Type.OutQuad)
+    print("combined_data", combined_data)
 
-        # Connect the finished signal to restore the original color
-        animation.finished.connect(lambda: self.button.setStyleSheet(f'background-color: {original_color.name()}'))
+    for i, byte in enumerate(combined_data):
+        print("循环次数:", i)  # 打印循环次数
+        print("当前处理的字节:", hex(byte))  # 打印当前处理的字节
+        crc ^= (byte << 8)  # 将当前字节左移8位后与CRC异或,相当于加入了对crc的影响
+        print("crc1", hex(crc))
 
-        # Start the animation
-        animation.start()
+        for _ in range(8):
+            if crc & 0x8000:
+                crc = (crc << 1) ^ poly
+                print("crc2", hex(crc))
+            else:
+                crc <<= 1
+                print("crc3", hex(crc))
+    return crc & 0xFFFF
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    window = MyWidget()
-    window.show()
-    sys.exit(app.exec())
+    data1 = 0x55aa  # 2个字节的数据
+    data2 = 0x01  # 1个字节的数据
+    data3 = 0x00000000  # 4个字节的数据
+    crc_result = CalCRC_16(data1, data2, data3)
+    print(f"CRC-16校验值: 0x{crc_result:04X}")

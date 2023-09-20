@@ -54,7 +54,7 @@ class SerialCommunication:
     para4：parity：校验位，校验1的个数
     RETURN:返回拼接的而进行数据包
     """
-    def create_data_packet(self, header_code, command_code, parameter, parity):
+    def create_data_packet(self, header_code, command_code, parameter, CRC):
         try:
             header_bytes = header_code.to_bytes(2, byteorder='little')
             command_bytes = command_code.to_bytes(1, byteorder='little')
@@ -65,11 +65,12 @@ class SerialCommunication:
             else:
                 # Convert non-negative integers to bytes
                 parameter_bytes = int(parameter).to_bytes(4, byteorder='little', signed=False)
-            parity_bytes = parity.to_bytes(1, byteorder='little')
-            # for byte1 in parameter_bytes:
-            #     print(f"{byte1:02x}")
-            # print(parameter)
-            data_packet = header_bytes + command_bytes + parameter_bytes + parity_bytes
+            CRC_bytes = CRC.to_bytes(2, byteorder='little')
+            data_packet = header_bytes + command_bytes + parameter_bytes + CRC_bytes
+            # Convert each byte to hexadecimal and join them into a string
+            hex_data_packet = ''.join([f'{byte:02x}' for byte in data_packet])
+            print("Data Packet in Hex: ", hex_data_packet)
+
             return data_packet
         except Exception as e:
             print("creating data err: ", str(e))

@@ -347,12 +347,11 @@ class SubWindow1(QDialog):
         try:
             HeaderCode = 0x55AA
             CombinPost = SerialCommunication()
-            parity_bit = self.CalculateParityBit(HeaderCode, contcommand, parameter)
-            print(f"奇偶校验位: {parity_bit}")
+            CRC_bytes = self.CalCRC_16(HeaderCode, contcommand, parameter)
+            print(f"CRC-16校验值: 0x{CRC_bytes:04X}")
             print("para: ", parameter, type(parameter))
-            DataPacket = CombinPost.create_data_packet(HeaderCode, contcommand, parameter, parity_bit)
+            DataPacket = CombinPost.create_data_packet(HeaderCode, contcommand, parameter, CRC_bytes)
             CombinPost.send_msg(DataPacket)
-            print(DataPacket)
         except Exception as e:
             print("An exception occurred:", str(e))
 
@@ -374,6 +373,40 @@ class SubWindow1(QDialog):
         count_ones = sum(bit == 1 for bit in combined_data)  # 计算输入数据中的 1 的个数
         parity_bit = count_ones % 2  # 求取奇偶校验位
         return parity_bit
+
+    """
+    计算CRC-16校验值（生成多项式0x8005）
+    :param data: 要计算CRC的数据，为bytes类型
+    :return: CRC-16校验值，为整数
+    """
+
+    def CalCRC_16(self, data1, data2, data3):
+
+        crc = 0xFFFF
+        poly = 0x8005
+
+        # 合并数据
+        if isinstance(data3, int) and data3 < 0:
+            # Convert negative integers to bytes
+            Data31 = data3.to_bytes(4, byteorder='little', signed=True)
+        else:
+            # Convert non-negative integers to bytes
+            Data31 = int(data3).to_bytes(4, byteorder='little', signed=False)
+
+        combined_data = data1.to_bytes(2, byteorder='little') + data2.to_bytes(1, byteorder='little') + Data31
+
+        for i, byte in enumerate(combined_data):
+            print("循环次数:", i)  # 打印循环次数
+            print("当前处理的字节:", hex(byte))  # 打印当前处理的字节
+            crc ^= (byte << 8)  # 将当前字节左移8位后与CRC异或,相当于加入了对crc的影响
+            for _ in range(8):
+                if crc & 0x8000:
+                    crc = (crc << 1) ^ poly
+                else:
+                    crc <<= 1
+        return crc & 0xFFFF
+
+
 
     def create_axis(self):
         # 创建一个 QGraphicsView

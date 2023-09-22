@@ -29,22 +29,22 @@ def CalCRC_16(data1, data2, data3):
 
     for i, byte in enumerate(combined_data):
         print("循环次数:", i)  # 打印循环次数
-        print("当前处理的字节:", hex(byte))  # 打印当前处理的字节
+#        print("当前处理的字节:", hex(byte))  # 打印当前处理的字节
         crc ^= (byte << 8)  # 将当前字节左移8位后与CRC异或,相当于加入了对crc的影响
-        print("crc1", hex(crc))
+#        print("crc1", hex(crc))
 
         for _ in range(8):
             if crc & 0x8000:
                 crc = (crc << 1) ^ poly
-                print("crc2", hex(crc))
+#                print("crc2", hex(crc))
             else:
                 crc <<= 1
-                print("crc3", hex(crc))
+#                print("crc3", hex(crc))
     return crc & 0xFFFF
 
 if __name__ == '__main__':
     data1 = 0x55aa  # 2个字节的数据
     data2 = 0x01  # 1个字节的数据
-    data3 = 0x00000000  # 4个字节的数据
+    data3 = 0x00000064  # 4个字节的数据
     crc_result = CalCRC_16(data1, data2, data3)
     print(f"CRC-16校验值: 0x{crc_result:04X}")

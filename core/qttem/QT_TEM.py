@@ -347,65 +347,24 @@ class SubWindow1(QDialog):
         try:
             HeaderCode = 0x55AA
             CombinPost = SerialCommunication()
-            CRC_bytes = self.CalCRC_16(HeaderCode, contcommand, parameter)
+
+            # 检测parameter是否为负数
+            if isinstance(parameter, int) and parameter < 0:
+                # Convert negative integers to bytes
+                parameter_bytes = parameter.to_bytes(4, byteorder='little', signed=True)
+            else:
+                # Convert non-negative integers to bytes
+                parameter_bytes = int(parameter).to_bytes(4, byteorder='little', signed=False)
+
+            CRC_bytes = CombinPost.CalCRC_16(HeaderCode, contcommand, parameter_bytes)
             print(f"CRC-16校验值: 0x{CRC_bytes:04X}")
-            print("para: ", parameter, type(parameter))
-            DataPacket = CombinPost.create_data_packet(HeaderCode, contcommand, parameter, CRC_bytes)
+            print("para: ", parameter_bytes, type(parameter_bytes))
+            DataPacket = CombinPost.create_data_packet(HeaderCode, contcommand, parameter_bytes, CRC_bytes)
+            hex_data_packet = ''.join([f'{byte:02x}' for byte in DataPacket])
+            print("Data Packet in PostCommandInfo: ", hex_data_packet)
             CombinPost.send_msg(DataPacket)
         except Exception as e:
             print("An exception occurred:", str(e))
-
-    """
-    计算奇偶校验位
-    参数:
-    data (str): 输入数据
-    返回:
-    int: 奇偶校验位（0 或 1）如果有偶数个1，则输出为0；如果有奇数个1，则输出为1；
-    """
-    def CalculateParityBit(self, data1, data2, data3):
-        if isinstance(data3, int) and data3 < 0:
-            # Convert negative integers to bytes
-            Data31 = data3.to_bytes(4, byteorder='little', signed=True)
-        else:
-            # Convert non-negative integers to bytes
-            Data31 = int(data3).to_bytes(4, byteorder='little', signed=False)
-        combined_data = data1.to_bytes(2, byteorder='little') + data2.to_bytes(1, byteorder='little') + Data31
-        count_ones = sum(bit == 1 for bit in combined_data)  # 计算输入数据中的 1 的个数
-        parity_bit = count_ones % 2  # 求取奇偶校验位
-        return parity_bit
-
-    """
-    计算CRC-16校验值（生成多项式0x8005）
-    :param data: 要计算CRC的数据，为bytes类型
-    :return: CRC-16校验值，为整数
-    """
-
-    def CalCRC_16(self, data1, data2, data3):
-
-        crc = 0xFFFF
-        poly = 0x8005
-
-        # 合并数据
-        if isinstance(data3, int) and data3 < 0:
-            # Convert negative integers to bytes
-            Data31 = data3.to_bytes(4, byteorder='little', signed=True)
-        else:
-            # Convert non-negative integers to bytes
-            Data31 = int(data3).to_bytes(4, byteorder='little', signed=False)
-
-        combined_data = data1.to_bytes(2, byteorder='little') + data2.to_bytes(1, byteorder='little') + Data31
-
-        for i, byte in enumerate(combined_data):
-            print("循环次数:", i)  # 打印循环次数
-            print("当前处理的字节:", hex(byte))  # 打印当前处理的字节
-            crc ^= (byte << 8)  # 将当前字节左移8位后与CRC异或,相当于加入了对crc的影响
-            for _ in range(8):
-                if crc & 0x8000:
-                    crc = (crc << 1) ^ poly
-                else:
-                    crc <<= 1
-        return crc & 0xFFFF
-
 
 
     def create_axis(self):

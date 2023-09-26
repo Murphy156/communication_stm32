@@ -259,7 +259,7 @@ class SubWindow1(QDialog):
         Pump5Layout = QHBoxLayout()
         self.Pump5RPMEdit = QLineEdit(self)
         self.Pump5RPMEdit.setFixedSize(80, 20)
-        self.Pump5RPMEdit.setPlaceholderText('Pump4')
+        self.Pump5RPMEdit.setPlaceholderText('Pump5')
         self.Pump5RPMEdit.setStyleSheet("background-color: #c1c7c7; color: black")
         Pump5Layout.addWidget(self.Pump5RPMEdit)
 

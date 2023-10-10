@@ -25,6 +25,7 @@ class SubWindow1(QDialog):
 
         sub_widget.setLayout(MainLayout)
 
+
         # 创建控制框的垂直布局
         ControlLayout = QVBoxLayout()
 
@@ -45,13 +46,13 @@ class SubWindow1(QDialog):
 
 
 # program start 这里是设置串口设置的布局
-        lable1 = QLabel("Serial Port Configuration")
+        lable1 = QLabel("Serial Port Configuration", )
         lable1.setFixedSize(200, 20)
         lable1.setStyleSheet("color: black")
 
         # 创建一个字体对象
         font1 = QFont()
-        font1.setPointSize(10)  # 设置字体大小
+        font1.setPointSize(15)  # 设置字体大小
         font1.setBold(True)     # 设置为粗体
         lable1.setFont(font1)
         # 将第一个文本框放在串口设置布局中
@@ -135,13 +136,6 @@ class SubWindow1(QDialog):
 
 
 ##program2 start 这里是创建电机控制面板模块的
-        lable4 = QLabel("Serial Port Configuration")
-        lable4.setFixedSize(200, 20)
-        lable4.setFont(font1)
-        lable4.setStyleSheet("background-color: #bfc6c7; color: black")
-        # 将第一个文本框放在串口设置布局中
-        ContMotCLayout.addWidget(lable4)
-
         lable5 = QLabel("SpeedSet/RPM")
         lable5.setFixedSize(100, 15)
         lable5.setStyleSheet("background-color: #bfc6c7; color: black")
@@ -158,7 +152,7 @@ class SubWindow1(QDialog):
         Pump1Button1 = QPushButton("Enable")
         Pump1Button1.setFixedSize(50, 20)
         Pump1Button1.setStyleSheet("background-color: #838787; color: #d7dbdb")
-        Pump1Button1.clicked.connect(lambda: self.PostCommandInfo(0x1, int(self.Pump1RPMEdit.text())))
+        Pump1Button1.clicked.connect(lambda: self.PostCommandInfo(0x1, self.Pump1RPMEdit.text()))
         Pump1Layout.addWidget(Pump1Button1)
 
         Pump1Button2 = QPushButton("Disable")
@@ -170,7 +164,7 @@ class SubWindow1(QDialog):
         Pump1Button3 = QPushButton("Change")
         Pump1Button3.setFixedSize(50, 20)
         Pump1Button3.setStyleSheet("background-color: #838787; color: #d7dbdb")
-        Pump1Button3.clicked.connect(lambda: self.PostCommandInfo(0x11, int(self.Pump1RPMEdit.text())))
+        Pump1Button3.clicked.connect(lambda: self.PostCommandInfo(0x11, self.Pump1RPMEdit.text()))
         Pump1Layout.addWidget(Pump1Button3)
         ContMotCLayout.addLayout(Pump1Layout)
 
@@ -185,7 +179,7 @@ class SubWindow1(QDialog):
         Pump2Button1 = QPushButton("Enable")
         Pump2Button1.setFixedSize(50, 20)
         Pump2Button1.setStyleSheet("background-color: #838787; color: #d7dbdb")
-        Pump2Button1.clicked.connect(lambda: self.PostCommandInfo(0x3, int(self.Pump2RPMEdit.text())))
+        Pump2Button1.clicked.connect(lambda: self.PostCommandInfo(0x3, self.Pump2RPMEdit.text()))
         Pump2Layout.addWidget(Pump2Button1)
 
         Pump2Button2 = QPushButton("Disable")
@@ -197,7 +191,7 @@ class SubWindow1(QDialog):
         Pump2Button3 = QPushButton("Change")
         Pump2Button3.setFixedSize(50, 20)
         Pump2Button3.setStyleSheet("background-color: #838787; color: #d7dbdb")
-        Pump2Button3.clicked.connect(lambda: self.PostCommandInfo(0x12, int(self.Pump2RPMEdit.text())))
+        Pump2Button3.clicked.connect(lambda: self.PostCommandInfo(0x12, self.Pump2RPMEdit.text()))
         Pump2Layout.addWidget(Pump2Button3)
         ContMotCLayout.addLayout(Pump2Layout)
 
@@ -212,7 +206,7 @@ class SubWindow1(QDialog):
         Pump3Button1 = QPushButton("Enable")
         Pump3Button1.setFixedSize(50, 20)
         Pump3Button1.setStyleSheet("background-color: #838787; color: #d7dbdb")
-        Pump3Button1.clicked.connect(lambda: self.PostCommandInfo(0x5, int(self.Pump3RPMEdit.text())))
+        Pump3Button1.clicked.connect(lambda: self.PostCommandInfo(0x5, self.Pump3RPMEdit.text()))
         Pump3Layout.addWidget(Pump3Button1)
 
         Pump3Button2 = QPushButton("Disable")
@@ -224,7 +218,7 @@ class SubWindow1(QDialog):
         Pump3Button3 = QPushButton("Change")
         Pump3Button3.setFixedSize(50, 20)
         Pump3Button3.setStyleSheet("background-color: #838787; color: #d7dbdb")
-        Pump3Button3.clicked.connect(lambda: self.PostCommandInfo(0x13, int(self.Pump3RPMEdit.text())))
+        Pump3Button3.clicked.connect(lambda: self.PostCommandInfo(0x13, self.Pump3RPMEdit.text()))
         Pump3Layout.addWidget(Pump3Button3)
         ContMotCLayout.addLayout(Pump3Layout)
 
@@ -239,7 +233,7 @@ class SubWindow1(QDialog):
         Pump4Button1 = QPushButton("Enable")
         Pump4Button1.setFixedSize(50, 20)
         Pump4Button1.setStyleSheet("background-color: #838787; color: #d7dbdb")
-        Pump4Button1.clicked.connect(lambda: self.PostCommandInfo(0x7, int(self.Pump4RPMEdit.text())))
+        Pump4Button1.clicked.connect(lambda: self.PostCommandInfo(0x7, self.Pump4RPMEdit.text()))
         Pump4Layout.addWidget(Pump4Button1)
 
         Pump4Button2 = QPushButton("Disable")
@@ -251,7 +245,7 @@ class SubWindow1(QDialog):
         Pump4Button3 = QPushButton("Change")
         Pump4Button3.setFixedSize(50, 20)
         Pump4Button3.setStyleSheet("background-color: #838787; color: #d7dbdb")
-        Pump4Button3.clicked.connect(lambda: self.PostCommandInfo(0x14, int(self.Pump4RPMEdit.text())))
+        Pump4Button3.clicked.connect(lambda: self.PostCommandInfo(0x14, self.Pump4RPMEdit.text()))
         Pump4Layout.addWidget(Pump4Button3)
         ContMotCLayout.addLayout(Pump4Layout)
 
@@ -266,7 +260,7 @@ class SubWindow1(QDialog):
         Pump5Button1 = QPushButton("Enable")
         Pump5Button1.setFixedSize(50, 20)
         Pump5Button1.setStyleSheet("background-color: #838787; color: #d7dbdb")
-        Pump5Button1.clicked.connect(lambda: self.PostCommandInfo(0x9, int(self.Pump5RPMEdit.text())))
+        Pump5Button1.clicked.connect(lambda: self.PostCommandInfo(0x9, self.Pump5RPMEdit.text()))
         Pump5Layout.addWidget(Pump5Button1)
 
         Pump5Button2 = QPushButton("Disable")
@@ -278,7 +272,7 @@ class SubWindow1(QDialog):
         Pump5Button3 = QPushButton("Change")
         Pump5Button3.setFixedSize(50, 20)
         Pump5Button3.setStyleSheet("background-color: #838787; color: #d7dbdb")
-        Pump5Button3.clicked.connect(lambda: self.PostCommandInfo(0x15, int(self.Pump5RPMEdit.text())))
+        Pump5Button3.clicked.connect(lambda: self.PostCommandInfo(0x15, self.Pump5RPMEdit.text()))
         Pump5Layout.addWidget(Pump5Button3)
         ContMotCLayout.addLayout(Pump5Layout)
 
@@ -347,33 +341,29 @@ class SubWindow1(QDialog):
         try:
             HeaderCode = 0x55AA
             CombinPost = SerialCommunication()
-            parity_bit = self.CalculateParityBit(HeaderCode, contcommand, parameter)
-            print(f"奇偶校验位: {parity_bit}")
-            print("para: ", parameter, type(parameter))
-            DataPacket = CombinPost.create_data_packet(HeaderCode, contcommand, parameter, parity_bit)
+
+            if parameter == '':
+                print("Parameter is empty. Please enter a value.")
+                return  # Return early if parameter is empty
+
+            # 检测parameter是否为负数
+            if isinstance(parameter, int) and parameter < 0:
+                # Convert negative integers to bytes
+                parameter_bytes = parameter.to_bytes(4, byteorder='little', signed=True)
+            else:
+                # Convert non-negative integers to bytes
+                parameter_bytes = int(parameter).to_bytes(4, byteorder='little', signed=False)
+
+            CRC_bytes = CombinPost.CalCRC_16(HeaderCode, contcommand, parameter_bytes)
+            print(f"CRC-16校验值: 0x{CRC_bytes:04X}")
+            print("para: ", parameter_bytes, type(parameter_bytes))
+            DataPacket = CombinPost.create_data_packet(HeaderCode, contcommand, parameter_bytes, CRC_bytes)
+            hex_data_packet = ''.join([f'{byte:02x}' for byte in DataPacket])
+            print("Data Packet in PostCommandInfo: ", hex_data_packet)
             CombinPost.send_msg(DataPacket)
-            print(DataPacket)
         except Exception as e:
             print("An exception occurred:", str(e))
 
-    """
-    计算奇偶校验位
-    参数:
-    data (str): 输入数据
-    返回:
-    int: 奇偶校验位（0 或 1）如果有偶数个1，则输出为0；如果有奇数个1，则输出为1；
-    """
-    def CalculateParityBit(self, data1, data2, data3):
-        if isinstance(data3, int) and data3 < 0:
-            # Convert negative integers to bytes
-            Data31 = data3.to_bytes(4, byteorder='little', signed=True)
-        else:
-            # Convert non-negative integers to bytes
-            Data31 = int(data3).to_bytes(4, byteorder='little', signed=False)
-        combined_data = data1.to_bytes(2, byteorder='little') + data2.to_bytes(1, byteorder='little') + Data31
-        count_ones = sum(bit == 1 for bit in combined_data)  # 计算输入数据中的 1 的个数
-        parity_bit = count_ones % 2  # 求取奇偶校验位
-        return parity_bit
 
     def create_axis(self):
         # 创建一个 QGraphicsView
@@ -439,22 +429,342 @@ class SubWindow2(QDialog):
     def __init__(self):
         super().__init__()
 
-        self.setFixedSize(300, 200)
         # 设置子窗口的背景颜色
-        self.setStyleSheet("background-color: lightgreen;")
-# 创建垂直布局
-        layout = QVBoxLayout()
+        self.setStyleSheet("background-color: #F5FFFA;")
 
-        # 创建实线框架（QFrame）作为分隔区域
-        separator = QFrame()
-        separator.setFrameShape(QFrame.Shape.Box)
-        separator.setFrameShadow(QFrame.Shadow.Sunken)
+        # 创建控制端的实线框架（QFrame）作为分隔区域
+        Controlseparator = QFrame(self)
+        Controlseparator.setStyleSheet("background-color: #F5FFFA;")
+        Controlseparator.setFrameShape(QFrame.Shape.Box)
+        Controlseparator.setFrameShadow(QFrame.Shadow.Sunken)
+        Controlseparator.setFixedSize(240, 700)
 
-        # 向布局添加分隔区域和一些文本或其他控件
-        layout.addWidget(separator)
+        Controlseparator_Frame1 = QFrame(Controlseparator)
+        Controlseparator_Frame1.setStyleSheet("background-color: #F5FFFA;")
+        Controlseparator_Frame1.setFrameShape(QFrame.Shape.Box)
+        Controlseparator_Frame1.setFrameShadow(QFrame.Shadow.Sunken)
+        Controlseparator_Frame1.setFixedSize(210, 200)
+
+        label1 = QLabel("Serial Port Configuration")
+        label1.setStyleSheet("color: black")
+        label1.setFixedSize(180, 20)
+        # 创建一个字体对象
+        font1 = QFont()
+        font1.setPointSize(15)  # 设置字体大小
+        font1.setBold(True)     # 设置为粗体
+        label1.setFont(font1)
+
+        # 串口布局安排
+        label2 = QLabel("Port")
+        label2.setStyleSheet("color: black")
+
+        font2 = QFont()
+        font2.setPointSize(10)  # 设置字体大小
+        font2.setBold(True)     # 设置为粗体
+        label2.setFont(font2)
+
+        # 串口的下拉选框
+        COM = QComboBox(self)
+        COM.addItem('COM1')
+        COM.addItem('COM2')
+        COM.addItem('COM3')
+        COM.addItem('COM4')
+        COM.addItem('COM5')
+        COM.addItem('COM6')
+        COM.setMinimumWidth(90)
+        COM.setMaximumWidth(90)
+        COM.setStyleSheet("background-color: #F0FFF0; color: black")
+        # 将COM和BAUD作为类的成员变量
+        self.COM = COM
+
+        # 将串口选择的水平布局设置
+        PortLayout = QHBoxLayout()
+        PortLayout.addWidget(label2)
+        PortLayout.addWidget(COM)
+
+
+        # 波特率选择
+        label3 = QLabel("Baudrate")
+        label3.setStyleSheet("color: black")
+        label3.setFont(font2)
+        # 串口的下拉选框
+        BAUD = QComboBox(self)
+        BAUD.addItem('2400', 2400)
+        BAUD.addItem('4800', 4800)
+        BAUD.addItem('9600', 9600)
+        BAUD.addItem('19200', 19200)
+        BAUD.addItem('38400', 38400)
+        BAUD.addItem('57600', 57600)
+        BAUD.addItem('115200', 115200)
+        BAUD.addItem('128000', 128000)
+        BAUD.addItem('230400', 230400)
+        BAUD.addItem('256000', 256000)
+        BAUD.setMinimumWidth(90)
+        BAUD.setMaximumWidth(90)
+        BAUD.setStyleSheet("background-color: #F0FFF0; color: black")
+        # 将COM和BAUD作为类的成员变量
+        self.BAUD = BAUD
+
+        # 将波特率选择的水平布局设置
+        BAUDLayout = QHBoxLayout()
+        BAUDLayout.addWidget(label3)
+        BAUDLayout.addWidget(BAUD)
+
+        # 开串口选择
+        self.indicatior = QLabel()
+        self.indicatior.setFixedSize(20, 20)
+        self.indicatior.setStyleSheet("background-color: gray; border-radius: 10px;")
+
+        post_com_button = QPushButton("Open Serial")
+        post_com_button.setFixedSize(80, 20)  # 设置按钮1的尺寸
+        post_com_button.setStyleSheet("background-color: #F0FFF0; color: black")
+        post_com_button.clicked.connect(self.PostSerialInfo)
+
+        # 将开启选择的水平布局设置
+        CommunicaitonLayout = QHBoxLayout()
+        CommunicaitonLayout.addWidget(self.indicatior)
+        CommunicaitonLayout.addWidget(post_com_button)
+
+        # 创建控制面板中串口通讯框架的布局
+        Controlseparator_Frame1_Layout = QVBoxLayout(Controlseparator_Frame1)
+        Controlseparator_Frame1_Layout.addWidget(label1)
+        Controlseparator_Frame1_Layout.addLayout(PortLayout)
+        Controlseparator_Frame1_Layout.addLayout(BAUDLayout)
+        Controlseparator_Frame1_Layout.addLayout(CommunicaitonLayout)
+        # Controlseparator_Frame1_Layout.setSpacing(5)
+
+########## 控制面板中的框架2
+        #创建控制面板中电机控制框架
+        Controlseparator_Frame2 = QFrame(Controlseparator)
+        Controlseparator_Frame2.setStyleSheet("background-color: #F5FFFA;")
+        Controlseparator_Frame2.setFrameShape(QFrame.Shape.Box)
+        Controlseparator_Frame2.setFrameShadow(QFrame.Shadow.Sunken)
+        Controlseparator_Frame2.setFixedSize(210, 400)
+
+        label5 = QLabel("SpeedSet/RPM")
+        label5.setFixedSize(180, 15)
+        label5.setStyleSheet("color: black")
+        label5.setFont(font1)
+
+        # pump1的控制框
+        self.Pump1RPMEdit = QLineEdit(self)
+        self.Pump1RPMEdit.setFixedSize(60, 22)
+        self.Pump1RPMEdit.setPlaceholderText('Pump1')
+        self.Pump1RPMEdit.setStyleSheet("background-color: #F0F8FF; color: black")
+
+        Pump1Button1 = QPushButton("ENA")
+        Pump1Button1.setFixedSize(35, 20)
+        Pump1Button1.setStyleSheet("background-color: #F0FFF0; color: black")
+        Pump1Button1.clicked.connect(lambda: self.PostCommandInfo(0x1, self.Pump1RPMEdit.text()))
+
+        Pump1Button2 = QPushButton("DIS")
+        Pump1Button2.setFixedSize(35, 20)
+        Pump1Button2.setStyleSheet("background-color: #F0FFF0; color: black")
+        Pump1Button2.clicked.connect(lambda: self.PostCommandInfo(0x2, 0x0))
+
+        Pump1Button3 = QPushButton("ALT")
+        Pump1Button3.setFixedSize(35, 20)
+        Pump1Button3.setStyleSheet("background-color: #F0FFF0; color: black")
+        Pump1Button3.clicked.connect(lambda: self.PostCommandInfo(0x11, self.Pump1RPMEdit.text()))
+
+        # pump1的控制框的水平布局设置
+        Pump1Layout = QHBoxLayout()
+        Pump1Layout.addWidget(self.Pump1RPMEdit)
+        Pump1Layout.addWidget(Pump1Button1)
+        Pump1Layout.addWidget(Pump1Button2)
+        Pump1Layout.addWidget(Pump1Button3)
+        Pump1Layout.setSpacing(4)
+
+        # pump2的控制框
+        self.Pump2RPMEdit = QLineEdit(self)
+        self.Pump2RPMEdit.setFixedSize(60, 22)
+        self.Pump2RPMEdit.setPlaceholderText('Pump2')
+        self.Pump2RPMEdit.setStyleSheet("background-color: #F0F8FF; color: black")
+
+        Pump2Button1 = QPushButton("ENA")
+        Pump2Button1.setFixedSize(35, 20)
+        Pump2Button1.setStyleSheet("background-color: #F0FFF0; color: black")
+        Pump2Button1.clicked.connect(lambda: self.PostCommandInfo(0x3, self.Pump2RPMEdit.text()))
+
+        Pump2Button2 = QPushButton("DIS")
+        Pump2Button2.setFixedSize(35, 20)
+        Pump2Button2.setStyleSheet("background-color: #F0FFF0; color: black")
+        Pump2Button2.clicked.connect(lambda: self.PostCommandInfo(0x4, 0x0))
+
+        Pump2Button3 = QPushButton("ALT")
+        Pump2Button3.setFixedSize(35, 20)
+        Pump2Button3.setStyleSheet("background-color: #F0FFF0; color: black")
+        Pump2Button3.clicked.connect(lambda: self.PostCommandInfo(0x12, self.Pump2RPMEdit.text()))
+
+        # pump2的控制框的水平布局设置
+        Pump2Layout = QHBoxLayout()
+        Pump2Layout.addWidget(self.Pump2RPMEdit)
+        Pump2Layout.addWidget(Pump2Button1)
+        Pump2Layout.addWidget(Pump2Button2)
+        Pump2Layout.addWidget(Pump2Button3)
+        Pump2Layout.setSpacing(4)
+
+        # pump3的控制框
+        self.Pump3RPMEdit = QLineEdit(self)
+        self.Pump3RPMEdit.setFixedSize(60, 22)
+        self.Pump3RPMEdit.setPlaceholderText('Pump3')
+        self.Pump3RPMEdit.setStyleSheet("background-color: #F0F8FF; color: black")
+
+        Pump3Button1 = QPushButton("ENA")
+        Pump3Button1.setFixedSize(35, 20)
+        Pump3Button1.setStyleSheet("background-color: #F0FFF0; color: black")
+        Pump3Button1.clicked.connect(lambda: self.PostCommandInfo(0x5, self.Pump3RPMEdit.text()))
+
+        Pump3Button2 = QPushButton("DIS")
+        Pump3Button2.setFixedSize(35, 20)
+        Pump3Button2.setStyleSheet("background-color: #F0FFF0; color: black")
+        Pump3Button2.clicked.connect(lambda: self.PostCommandInfo(0x6, 0x0))
+
+        Pump3Button3 = QPushButton("ALT")
+        Pump3Button3.setFixedSize(35, 20)
+        Pump3Button3.setStyleSheet("background-color: #F0FFF0; color: black")
+        Pump3Button3.clicked.connect(lambda: self.PostCommandInfo(0x13, self.Pump3RPMEdit.text()))
+
+        # pump3的控制框的水平布局设置
+        Pump3Layout = QHBoxLayout()
+        Pump3Layout.addWidget(self.Pump3RPMEdit)
+        Pump3Layout.addWidget(Pump3Button1)
+        Pump3Layout.addWidget(Pump3Button2)
+        Pump3Layout.addWidget(Pump3Button3)
+        Pump3Layout.setSpacing(4)
+
+        # pump4的控制框
+        self.Pump4RPMEdit = QLineEdit(self)
+        self.Pump4RPMEdit.setFixedSize(60, 22)
+        self.Pump4RPMEdit.setPlaceholderText('Pump4')
+        self.Pump4RPMEdit.setStyleSheet("background-color: #F0F8FF; color: black")
+
+        Pump4Button1 = QPushButton("ENA")
+        Pump4Button1.setFixedSize(35, 20)
+        Pump4Button1.setStyleSheet("background-color: #F0FFF0; color: black")
+        Pump4Button1.clicked.connect(lambda: self.PostCommandInfo(0x7, self.Pump4RPMEdit.text()))
+
+        Pump4Button2 = QPushButton("DIS")
+        Pump4Button2.setFixedSize(35, 20)
+        Pump4Button2.setStyleSheet("background-color: #F0FFF0; color: black")
+        Pump4Button2.clicked.connect(lambda: self.PostCommandInfo(0x8, 0x0))
+
+        Pump4Button3 = QPushButton("ALT")
+        Pump4Button3.setFixedSize(35, 20)
+        Pump4Button3.setStyleSheet("background-color: #F0FFF0; color: black")
+        Pump4Button3.clicked.connect(lambda: self.PostCommandInfo(0x14, self.Pump4RPMEdit.text()))
+
+        # pump4的控制框的水平布局设置
+        Pump4Layout = QHBoxLayout()
+        Pump4Layout.addWidget(self.Pump4RPMEdit)
+        Pump4Layout.addWidget(Pump4Button1)
+        Pump4Layout.addWidget(Pump4Button2)
+        Pump4Layout.addWidget(Pump4Button3)
+        Pump4Layout.setSpacing(4)
+
+        # pump5的控制框
+        self.Pump5RPMEdit = QLineEdit(self)
+        self.Pump5RPMEdit.setFixedSize(60, 22)
+        self.Pump5RPMEdit.setPlaceholderText('Pump4')
+        self.Pump5RPMEdit.setStyleSheet("background-color:#F0F8FF; color: black")
+
+        Pump5Button1 = QPushButton("ENA")
+        Pump5Button1.setFixedSize(35, 20)
+        Pump5Button1.setStyleSheet("background-color: #F0FFF0; color: black")
+        Pump5Button1.clicked.connect(lambda: self.PostCommandInfo(0x9, self.Pump5RPMEdit.text()))
+
+        Pump5Button2 = QPushButton("DIS")
+        Pump5Button2.setFixedSize(35, 20)
+        Pump5Button2.setStyleSheet("background-color: #F0FFF0; color: black")
+        Pump5Button2.clicked.connect(lambda: self.PostCommandInfo(0xA, 0x0))
+
+        Pump5Button3 = QPushButton("ALT")
+        Pump5Button3.setFixedSize(35, 20)
+        Pump5Button3.setStyleSheet("background-color: #F0FFF0; color: black")
+        Pump5Button3.clicked.connect(lambda: self.PostCommandInfo(0x15, self.Pump5RPMEdit.text()))
+
+        # pump5的控制框的水平布局设置
+        Pump5Layout = QHBoxLayout()
+        Pump5Layout.addWidget(self.Pump5RPMEdit)
+        Pump5Layout.addWidget(Pump5Button1)
+        Pump5Layout.addWidget(Pump5Button2)
+        Pump5Layout.addWidget(Pump5Button3)
+        Pump5Layout.setSpacing(4)
+
+        # 创建控制面板中电机控制框架的布局
+        Controlseparator_Frame2_Layout = QVBoxLayout(Controlseparator_Frame2)
+        Controlseparator_Frame2_Layout.addWidget(label5)
+        Controlseparator_Frame2_Layout.addLayout(Pump1Layout)
+        Controlseparator_Frame2_Layout.addLayout(Pump2Layout)
+        Controlseparator_Frame2_Layout.addLayout(Pump3Layout)
+        Controlseparator_Frame2_Layout.addLayout(Pump4Layout)
+        Controlseparator_Frame2_Layout.addLayout(Pump5Layout)
+
+        # 创建垂直布局将两个框架添加到布局中
+        ConrtolLayout = QVBoxLayout(Controlseparator)
+        ConrtolLayout.addWidget(Controlseparator_Frame1)
+        ConrtolLayout.addWidget(Controlseparator_Frame2)
+        ConrtolLayout.setSpacing(5)
+
+        # 创建显示端的实线框架（QFrame）作为分隔区域
+        Showseparator = QFrame(self)
+        Showseparator.setStyleSheet("background-color: blue;")
+        Showseparator.setFrameShape(QFrame.Shape.Box)
+        Showseparator.setFrameShadow(QFrame.Shadow.Sunken)
+        Showseparator.setFixedSize(900, 700)
+
+        # 创建水平布局
+        Sub2Mainlayout = QHBoxLayout()
+        Sub2Mainlayout.addWidget(Controlseparator)
+        Sub2Mainlayout.addWidget(Showseparator)
 
         # 将布局设置为子窗口的布局
-        self.setLayout(layout)
+        self.setLayout(Sub2Mainlayout)
+
+    def PostSerialInfo(self):
+        self.selected_port = self.COM.currentText()
+        self.selected_baud = int(self.BAUD.currentText())
+        OpenSeri = SerialCommunication()
+        if self.indicatior.styleSheet() == "background-color: gray; border-radius: 10px;":
+            self.indicatior.setStyleSheet("background-color: green; border-radius: 10px;")
+            self.COM.setDisabled(True)
+            self.BAUD.setDisabled(True)
+            OpenSeri.open_ser(self.selected_port, self.selected_baud)
+        else:
+            self.indicatior.setStyleSheet("background-color: gray; border-radius: 10px;")
+            self.COM.setEnabled(True)
+            self.BAUD.setEnabled(True)
+            OpenSeri.close_ser()
+        print("Selected port:", self.selected_port)
+        print("Selected baud rate:", self.selected_baud)
+
+    def PostCommandInfo(self, contcommand, parameter):
+        try:
+            HeaderCode = 0x55AA
+            CombinPost = SerialCommunication()
+            if parameter == '':
+                print("Parameter is empty. Please enter a value.")
+                return  # Return early if parameter is empty
+
+            parameter = int(parameter)
+
+            # 检测parameter是否为负数
+            if isinstance(parameter, int) and parameter < 0:
+                # Convert negative integers to bytes
+                parameter_bytes = parameter.to_bytes(4, byteorder='little', signed=True)
+            else:
+                # Convert non-negative integers to bytes
+                parameter_bytes = int(parameter).to_bytes(4, byteorder='little', signed=False)
+
+            CRC_bytes = CombinPost.CalCRC_16(HeaderCode, contcommand, parameter_bytes)
+            print(f"CRC-16校验值: 0x{CRC_bytes:04X}")
+            print("para: ", parameter_bytes, type(parameter_bytes))
+            DataPacket = CombinPost.create_data_packet(HeaderCode, contcommand, parameter_bytes, CRC_bytes)
+            hex_data_packet = ''.join([f'{byte:02x}' for byte in DataPacket])
+            print("Data Packet in PostCommandInfo: ", hex_data_packet)
+            CombinPost.send_msg(DataPacket)
+        except Exception as e:
+            print("An exception occurred:", str(e))
 
 class SubWindow3(QDialog):
     def __init__(self):

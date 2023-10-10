@@ -1,43 +1,63 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QPushButton, QVBoxLayout, QWidget
-from PyQt6.QtCore import QPropertyAnimation, QEasingCurve, Qt
-from PyQt6.QtGui import QColor
+from PyQt6.QtWidgets import QApplication, QDialog, QVBoxLayout, QHBoxLayout, QFrame, QLabel, QPushButton, QLineEdit
 
-class MyWidget(QWidget):
+class SubWindow2(QDialog):
     def __init__(self):
         super().__init__()
 
-        self.initUI()
+        self.setStyleSheet("background-color: white;")
 
-    def initUI(self):
-        layout = QVBoxLayout()
+        Controlseparator = QFrame(self)
+        Controlseparator.setStyleSheet("background-color: green;")
+        Controlseparator.setFrameShape(QFrame.Shape.Box)
+        Controlseparator.setFrameShadow(QFrame.Shadow.Sunken)
+        Controlseparator.setFixedSize(200, 700)
 
-        self.button = QPushButton('Click me', self)
-        self.button.setStyleSheet('background-color: green')
-        self.button.clicked.connect(self.onButtonClick)
+        # 创建第一个垂直布局框架
+        frame1 = QFrame(Controlseparator)
+        frame1_layout = QVBoxLayout(frame1)
+        frame1_label = QLabel('Frame 1:', frame1)
+        frame1_button = QPushButton('Button 1', frame1)
+        frame1_layout.addWidget(frame1_label)
+        frame1_layout.addWidget(frame1_button)
 
-        layout.addWidget(self.button)
-        self.setLayout(layout)
+        # 创建第二个垂直布局框架
+        frame2 = QFrame(Controlseparator)
+        frame2_layout = QVBoxLayout(frame2)
+        frame2_label = QLabel('Frame 2:', frame2)
+        frame2_button = QPushButton('Button 2', frame2)
+        frame2_layout.addWidget(frame2_label)
+        frame2_layout.addWidget(frame2_button)
 
-    def onButtonClick(self):
-        # Get the original button color
-        original_color = self.button.palette().button().color()
+        # 创建垂直布局并将两个框架添加到布局中
+        ControlLayout = QVBoxLayout(Controlseparator)
+        ControlLayout.addWidget(frame1)
+        ControlLayout.addWidget(frame2)
 
-        # Create a property animation for background color
-        animation = QPropertyAnimation(self.button, b'backgroundColor')
-        animation.setDuration(500)  # Animation duration in milliseconds
-        animation.setStartValue(original_color)
-        animation.setEndValue(QColor('red'))
-        animation.setEasingCurve(QEasingCurve.Type.OutQuad)
+        Showseparator = QFrame(self)
+        Showseparator.setStyleSheet("background-color: blue;")
+        Showseparator.setFrameShape(QFrame.Shape.Box)
+        Showseparator.setFrameShadow(QFrame.Shadow.Sunken)
+        Showseparator.setFixedSize(900, 700)
 
-        # Connect the finished signal to restore the original color
-        animation.finished.connect(lambda: self.button.setStyleSheet(f'background-color: {original_color.name()}'))
+        # 创建一些控件放入Showseparator
+        show_label = QLabel('Display:', Showseparator)
+        show_button = QPushButton('Display Button', Showseparator)
+        show_input = QLineEdit(Showseparator)
 
-        # Start the animation
-        animation.start()
+        ShowLayout = QVBoxLayout(Showseparator)
+        ShowLayout.addWidget(show_label)
+        ShowLayout.addWidget(show_button)
+        ShowLayout.addWidget(show_input)
+
+        Sub2Mainlayout = QHBoxLayout()
+        Sub2Mainlayout.addWidget(Showseparator)
+        Sub2Mainlayout.addWidget(Controlseparator)
+
+        self.setLayout(Sub2Mainlayout)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = MyWidget()
-    window.show()
+    sub_window = SubWindow2()
+    sub_window.show()
     sys.exit(app.exec())

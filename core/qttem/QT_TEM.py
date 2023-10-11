@@ -706,12 +706,64 @@ class SubWindow2(QDialog):
         ConrtolLayout.addWidget(Controlseparator_Frame2)
         ConrtolLayout.setSpacing(5)
 
+        ######## 显示模块的开始
         # 创建显示端的实线框架（QFrame）作为分隔区域
         Showseparator = QFrame(self)
-        Showseparator.setStyleSheet("background-color: blue;")
+        Showseparator.setStyleSheet("background-color: #F5FFFA;")
         Showseparator.setFrameShape(QFrame.Shape.Box)
         Showseparator.setFrameShadow(QFrame.Shadow.Sunken)
         Showseparator.setFixedSize(900, 700)
+
+        #创建显示分区1
+        Showseparator_Frame1 = QFrame(Showseparator)
+        Showseparator_Frame1.setStyleSheet("background-color: #F5FFFA;")
+        Showseparator_Frame1.setFrameShape(QFrame.Shape.Box)
+        Showseparator_Frame1.setFrameShadow(QFrame.Shadow.Sunken)
+        Showseparator_Frame1.setFixedSize(900, 350)
+
+
+        label6 = QLabel("Speed Display")
+        label6.setStyleSheet("color: black")
+        label6.setFixedSize(180, 20)
+        label6.setFont(font1)
+
+        # 创建坐标轴
+        Grab1Lable = QLabel("Pump 1")
+        Gra1 = self.create_axis()
+        Grab1Lable.setStyleSheet("background-color: #F5FFFA; color: black")
+        Grab1Lable.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        # 创建电机1显示布局
+        Showseparator_Frame1_Layout = QVBoxLayout(Showseparator_Frame1)
+        Showseparator_Frame1_Layout.addWidget(label6)
+        Showseparator_Frame1_Layout.addWidget(Grab1Lable)
+        Showseparator_Frame1_Layout.addWidget(Gra1)
+
+        # 创建显示分区2
+        Showseparator_Frame2 = QFrame(Showseparator)
+        Showseparator_Frame2.setStyleSheet("background-color: #F5FFFA;")
+        Showseparator_Frame2.setFrameShape(QFrame.Shape.Box)
+        Showseparator_Frame2.setFrameShadow(QFrame.Shadow.Sunken)
+        Showseparator_Frame2.setFixedSize(900, 350)
+
+        # 创建坐标轴
+        Grab2Lable = QLabel("Pump 2")
+        Gra2 = self.create_axis()
+        Grab2Lable.setStyleSheet("background-color: #F5FFFA; color: black")
+        Grab2Lable.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        # 创建电机2显示布局
+        Showseparator_Frame2_Layout = QVBoxLayout(Showseparator_Frame2)
+        Showseparator_Frame2_Layout.addWidget(Grab2Lable)
+        Showseparator_Frame2_Layout.addWidget(Gra2)
+
+        # 创建垂直布局将两个框架添加到布局中
+        ShowLayout = QVBoxLayout(Showseparator)
+        ShowLayout.addWidget(Showseparator_Frame1)
+        ShowLayout.addWidget(Showseparator_Frame2)
+        ShowLayout.setSpacing(0)
+
+
 
         # 创建水平布局
         Sub2Mainlayout = QHBoxLayout()
@@ -765,6 +817,64 @@ class SubWindow2(QDialog):
             CombinPost.send_msg(DataPacket)
         except Exception as e:
             print("An exception occurred:", str(e))
+
+    def create_axis(self):
+        # 创建一个 QGraphicsView
+        graphics_view = QGraphicsView()
+
+        # 设置场景
+        scene = QGraphicsScene()
+        graphics_view.setScene(scene)
+
+        # 调整可视化显示的大小
+        width = 800  # 根据需要调整
+        height = 220  # 根据需要调整
+
+        # 创建左侧的y轴（速度）
+        y_axis = QGraphicsLineItem(0, 0, 0, height)
+        y_axis.setPen(QPen(QColor("black")))
+        scene.addItem(y_axis)
+
+        # 创建x轴（时间）
+        x_axis = QGraphicsLineItem(0, height / 2, width, height / 2)
+        x_axis.setPen(QPen(QColor("black")))
+        scene.addItem(x_axis)
+
+        # 添加网格
+        for i in range(0, int(width) + 1, int(width / 8)):
+            grid_line = QGraphicsLineItem(i, 0, i, height)
+            grid_line.setPen(QPen(QColor("#808080")))  # 设置网格线颜色
+            scene.addItem(grid_line)
+
+        for i in range(0, int(height) + 1, int(height / 8)):
+            grid_line = QGraphicsLineItem(0, i, width, i)
+            grid_line.setPen(QPen(QColor("#808080")))  # 设置网格线颜色
+            scene.addItem(grid_line)
+
+
+        # 为x轴添加刻度线和标签
+        for i in range(0, int(width) + 1, int(width / 4)):
+            tick = QGraphicsLineItem(i, height / 2 - 5, i, height / 2 + 5)
+            tick.setPen(QPen(QColor("black")))
+            scene.addItem(tick)
+            label = QGraphicsTextItem(str(i))
+            label.setPos(i - 10, height / 2 + 120)
+            label.setDefaultTextColor(QColor("black"))
+            scene.addItem(label)
+
+        # 为y轴添加刻度线和标签
+        for i in range(-200, 201, 50):
+            tick = QGraphicsLineItem(-5, height * (1 - (i + 200) / 400), 5, height * (1 - (i + 200) / 400))
+            tick.setPen(QPen(QColor("black")))
+            scene.addItem(tick)
+            label = QGraphicsTextItem(str(i))
+            label.setPos(-40, height * (1 - (i + 200) / 400) - 10)
+            label.setDefaultTextColor(QColor("black"))
+            scene.addItem(label)
+
+        graphics_view.setStyleSheet("background-color: #F5FFFA;")
+
+        return graphics_view
 
 class SubWindow3(QDialog):
     def __init__(self):
